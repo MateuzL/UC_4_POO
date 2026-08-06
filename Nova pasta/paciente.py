@@ -42,3 +42,4 @@ class Paciente:
             print(f"Nome: {self.get_nome()}")
             print(f"CPF: {self.get_cpf()}")
             print(f"Idade: {self.get_idade()}")
+            
