@@ -17,4 +17,4 @@ class Refeicao(Produto):
     def exibir_dados(self):
             print("\n--- REFEIÇÃO ---")
             super().exibir_dados()
-            print(f"Volume: {self.tamanho}")
+            print(f"Tamanho: {self.tamanho}")

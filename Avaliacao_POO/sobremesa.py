@@ -9,7 +9,7 @@ class Sobremesa(Produto):
     def get_preco(self):
         preco = super().get_preco()
 
-        if self.especial == True:
+        if self.especial:
             preco = preco * 1.15
         return preco
 

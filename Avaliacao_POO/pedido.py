@@ -12,7 +12,7 @@ class Pedido:
             print("Não é possível adicionar produtos a um pedido finalizado.")
             return False
 
-        self.produtos.append(produto)
+        self.produtos.append(produto)   
         return True
 
     def finalizar(self):

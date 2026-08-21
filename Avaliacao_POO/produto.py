@@ -22,6 +22,7 @@ class Produto:
                     print("Erro: O preço deve ser maior que zero.")
                     return False
         self.__preco = preco
+        return True
 
     def exibir_dados(self):
           print(f"Código: {self.codigo}")

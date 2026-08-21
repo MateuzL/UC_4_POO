@@ -60,30 +60,31 @@ produtos = [
 
 # CADASTRO DO CLIENTE
 
-
-
 print(" ----- SISTEMA RESTAURANTE ----- ")
 
 print("\n--- CADASTRO DO CLIENTE ---")
 
 while True:
 
-    #try:
-        nome = input("Digite seu nome: ")
-        telefone = input("Digite seu telefone: ")
+    nome = input("Digite seu nome: ")
+    telefone = input("Digite seu telefone: ")
 
-        cliente = Cliente(
-            1,
-            nome,
-            telefone
-        )
+    if len(nome.strip()) < 3:
+        print("\nErro: O nome deve ter pelo menos 3 caracteres.\n")
+        continue
 
-        print("\nCliente cadastrado com sucesso!")
-        break
+    if telefone.strip() == "":
+        print("\nErro: O telefone não pode ficar vazio.\n")
+        continue
 
-    #except ValueError as erro:
-        #print(f"\nErro: {erro}")
-        #print("Digite os dados novamente.\n")
+    cliente = Cliente(
+        1,
+        nome,
+        telefone
+    )
+
+    print("\nCliente cadastrado com sucesso!")
+    break
 
 
 
