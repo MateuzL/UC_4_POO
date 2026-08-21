@@ -6,12 +6,17 @@ class Sobremesa(Produto):
 
         self.especial = especial
 
-    def calcular_preco(self, tamanho):
-        return super().calcular_preco(tamanho)
+    def get_preco(self):
+        preco = super().get_preco()
+
+        if self.especial == True:
+            preco = preco * 1.15
+        return preco
 
     def exibir_dados(self):
         print(f"\n--- SOBREMESA ---")
         super().exibir_dados()
-        print(f"Especial: {self.especial}")
-        
+        #print(f"Especial: {self.especial}")
+
+
         

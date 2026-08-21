@@ -12,11 +12,13 @@ class Cliente:
 
     def set_nome(self, nome):
         nome = nome.strip()
+
         if len(nome) <= 0:
             print("Erro: o nome não deve ficar vazio.")
             return False
         if len(nome) < 3:
             print("Erro: O nome não deve ter menos que 3 caracteres.")
+            return False
         
         self.__nome = nome
         return True
@@ -25,12 +27,12 @@ class Cliente:
         return self.__telefone
 
     def set_telefone(self, telefone):
-        if len(telefone) <= 0:
+        telefone = telefone.strip()
+        if telefone == "":
             print("Erro: O Telefone não pode ficar vazio.")
             return False
+        
         self.__telefone = telefone
-        return True
-
 
     def exibir_dados(self):
         print("--- DADOS CLIENTE ---")

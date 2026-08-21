@@ -1,19 +1,20 @@
 from produto import Produto
 
 class Refeicao(Produto):
+
     def __init__(self, codigo, nome, preco, tamanho):
         super().__init__(codigo, nome, preco)
-
         self.tamanho = tamanho
 
+    def get_preco(self):
+        preco = super().get_preco()
 
-    def calcular_preco(self, tamanho):
-        if tamanho == "Grande":
-            valor = self.__preco * 1.20
+        if self.tamanho.lower() == "grande":
+            preco = preco * 1.20
 
-        return self.__preco == valor
+        return preco
 
     def exibir_dados(self):
-        print("\n--- DADOS REFEIÇÃO ---")
-        super().exibir_dados()
-        print(f"Tamanho: {self.tamanho}")
+            print("\n--- REFEIÇÃO ---")
+            super().exibir_dados()
+            print(f"Volume: {self.tamanho}")

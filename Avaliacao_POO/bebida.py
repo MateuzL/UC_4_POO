@@ -6,10 +6,15 @@ class Bebida(Produto):
 
         self.volume = volume
 
-    def calcular_preco(self, tamanho):
-        return super().calcular_preco(tamanho)
+    def get_preco(self):
+        preco = super().get_preco()
+
+        if self.volume > 500:
+            preco = preco + 3.00
+        return preco
 
     def exibir_dados(self):
         print("\n--- BEBIDA ---")
         super().exibir_dados()
-        print(f"Volume: {self.volume}")
+        #print(f"Volume: {self.volume}")
+

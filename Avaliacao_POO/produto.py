@@ -21,14 +21,9 @@ class Produto:
         if preco <= 0:
                     print("Erro: O preço deve ser maior que zero.")
                     return False
-        self.__preco = float (preco)
-        return True
-
-    def calcular_preco(self, tamanho):
-          if tamanho == "Grande":
-                self.__preco = self.preco * 1.20
+        self.__preco = preco
 
     def exibir_dados(self):
           print(f"Código: {self.codigo}")
           print(f"Nome: {self.nome}")
-          print(f"Preço: R${self.__preco:.2f}")
+          print(f"Preço: R${self.get_preco():.2f}")
