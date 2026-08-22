@@ -25,8 +25,13 @@ class Cliente:
 
     def set_telefone(self, telefone):
         telefone = telefone.strip()
+
+        if not telefone.isdigit():
+            print("ERRO: O telefone deve ser numérico.")
+            return False
+        
         if telefone == "":
-            print("Erro: O Telefone não pode ficar vazio.")
+            print("ERRO: O Telefone não pode ficar vazio.")
             return False
         
         self.__telefone = telefone

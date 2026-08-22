@@ -6,6 +6,7 @@ Bebida - volume = se bebida for acima de 500ml acrescentar valor de R$3,00
 Sobremesa - se a sobremesa for especial = acrescentar +15%
 
 '''
+
 class Produto:
     def __init__(self, codigo, nome, preco):
         self.codigo = codigo

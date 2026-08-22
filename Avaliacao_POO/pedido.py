@@ -47,7 +47,7 @@ class Pedido:
 
         for produto in self.produtos:
             print(f"\n - {produto.nome}")
-            print(f"\nR$ {produto.get_preco():.2f}")
+            print(f"\nPreço: R${produto.get_preco():.2f}")
 
         print(f"\nTOTAL: R$ {self.calcular_total():.2f}")
         print("==============================")
