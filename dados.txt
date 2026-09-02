@@ -1,0 +1,10 @@
+=== USUARIOS ===
+Coordenador|mateus|mateus|mateus123
+Professor|joao|joao|123
+=== SALAS ===
+1|25|0
+2|20|1
+=== TURMAS ===
+Tec dev|Desenvolvimento de Sistemas|20
+=== RESERVAS ===
+joao|1|Tec dev|02/09/2026|18:00|Ativa

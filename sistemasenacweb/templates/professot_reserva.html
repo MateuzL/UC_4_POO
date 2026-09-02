@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}
+Minhas Reservas
+{% endblock %}
+
+{% block menu %}
+
+<a href="{{ url_for('professor') }}">
+    Início
+</a>
+
+<a href="{{ url_for('professor_salas') }}">
+    Salas
+</a>
+
+<a href="{{ url_for('professor_reservas') }}">
+    Reservas
+</a>
+
+<a href="{{ url_for('logout') }}">
+    Sair
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+```
+<h1>
+    Minhas Reservas
+</h1>
+
+{% if reservas %}
+
+    <table class="tabela">
+
+        <thead>
+
+            <tr>
+
+                <th>Sala</th>
+                <th>Turma</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+                <th>Ações</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for reserva in reservas %}
+
+            <tr>
+
+                <td>
+                    {{ reserva.sala.numero }}
+                </td>
+
+                <td>
+                    {{ reserva.turma.nome }}
+                </td>
+
+                <td>
+                    {{ reserva.data }}
+                </td>
+
+                <td>
+                    {{ reserva.horario }}
+                </td>
+
+                <td>
+
+                    {% if reserva.status == "Ativa" %}
+
+                        <span class="disponivel">
+                            Ativa
+                        </span>
+
+                    {% else %}
+
+                        <span class="indisponivel">
+                            Cancelada
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if reserva.status == "Ativa" %}
+
+                        <a
+                            href="{{ url_for('alterar_reserva', indice=loop.index0) }}"
+                            class="botao"
+                        >
+                            Alterar
+                        </a>
+
+                        <a
+                            href="{{ url_for('cancelar_reserva', indice=loop.index0) }}"
+                            class="botao botao-excluir"
+                            onclick="return confirm('Deseja cancelar esta reserva?');"
+                        >
+                            Cancelar
+                        </a>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% else %}
+
+    <p>
+        Você não possui reservas.
+    </p>
+
+{% endif %}
+
+<br>
+
+<a
+    href="{{ url_for('solicitar_reserva') }}"
+    class="botao"
+>
+    Solicitar Reserva
+</a>
+```
+
+</div>
+
+{% endblock %}

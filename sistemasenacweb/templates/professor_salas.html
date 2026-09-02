@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+Consultar Salas
+{% endblock %}
+
+{% block menu %}
+
+<a href="{{ url_for('professor') }}">
+    Início
+</a>
+
+<a href="{{ url_for('professor_salas') }}">
+    Salas
+</a>
+
+<a href="{{ url_for('professor_reservas') }}">
+    Reservas
+</a>
+
+<a href="{{ url_for('logout') }}">
+    Sair
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+```
+<h1>
+    Salas
+</h1>
+
+{% if salas %}
+
+    <table class="tabela">
+
+        <thead>
+
+            <tr>
+
+                <th>Sala</th>
+                <th>Capacidade</th>
+                <th>Disponibilidade</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for sala in salas %}
+
+            <tr>
+
+                <td>
+                    {{ sala.numero }}
+                </td>
+
+                <td>
+                    {{ sala.capacidade }}
+                </td>
+
+                <td>
+
+                    {% if sala.disponivel %}
+
+                        <span class="disponivel">
+                            Disponível
+                        </span>
+
+                    {% else %}
+
+                        <span class="indisponivel">
+                            Indisponível
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% else %}
+
+    <p>
+        Nenhuma sala cadastrada.
+    </p>
+
+{% endif %}
+```
+
+</div>
+
+{% endblock %}

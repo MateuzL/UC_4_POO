@@ -99,8 +99,6 @@ def cadastrar_cliente():
         return cliente
 
 
-
-
 # CRIAR PEDIDO
 
 

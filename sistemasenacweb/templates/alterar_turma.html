@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+Alterar Turma
+{% endblock %}
+
+{% block menu %}
+
+<a href="{{ url_for('coordenador') }}">Início</a> <a href="{{ url_for('consultar_turmas') }}">Turmas</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+```
+<h1>Alterar Turma</h1>
+
+{% if mensagem %}
+
+    <div class="mensagem-erro">
+        {{ mensagem }}
+    </div>
+
+{% endif %}
+
+<form method="POST">
+
+    <div class="campo">
+
+        <label>
+            Nome da turma
+        </label>
+
+        <input
+            type="text"
+            value="{{ turma.nome }}"
+            disabled
+        >
+
+    </div>
+
+    <div class="campo">
+
+        <label for="curso">
+            Curso
+        </label>
+
+        <input
+            type="text"
+            id="curso"
+            name="curso"
+            value="{{ turma.curso }}"
+            required
+        >
+
+    </div>
+
+    <div class="campo">
+
+        <label for="quantidade">
+            Quantidade de alunos
+        </label>
+
+        <input
+            type="number"
+            id="quantidade"
+            name="quantidade"
+            value="{{ turma.quantidade_alunos }}"
+            min="1"
+            required
+        >
+
+    </div>
+
+    <button
+        type="submit"
+        class="botao"
+    >
+        Salvar Alterações
+    </button>
+
+    <a
+        href="{{ url_for('consultar_turmas') }}"
+        class="botao botao-secundario"
+    >
+        Voltar
+    </a>
+
+</form>
+```
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}
+Turmas
+{% endblock %}
+
+{% block menu %}
+
+<a href="{{ url_for('coordenador') }}">Início</a> <a href="{{ url_for('consultar_turmas') }}">Turmas</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+```
+<h1>Turmas cadastradas</h1>
+
+{% if turmas %}
+
+    <table class="tabela">
+
+        <thead>
+
+            <tr>
+
+                <th>Turma</th>
+                <th>Curso</th>
+                <th>Alunos</th>
+                <th>Ações</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for turma in turmas %}
+
+            <tr>
+
+                <td>
+                    {{ turma.nome }}
+                </td>
+
+                <td>
+                    {{ turma.curso }}
+                </td>
+
+                <td>
+                    {{ turma.quantidade_alunos }}
+                </td>
+
+                <td>
+
+                    <a
+                        href="{{ url_for('alterar_turma', nome=turma.nome) }}"
+                        class="botao"
+                    >
+                        Alterar
+                    </a>
+
+                    <a
+                        href="{{ url_for('excluir_turma', nome=turma.nome) }}"
+                        class="botao botao-excluir"
+                        onclick="return confirm('Tem certeza que deseja excluir esta turma?');"
+                    >
+                        Excluir
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% else %}
+
+    <p>
+        Nenhuma turma cadastrada.
+    </p>
+
+{% endif %}
+
+<br>
+
+<a
+    href="{{ url_for('cadastrar_turma') }}"
+    class="botao"
+>
+    Cadastrar Turma
+</a>
+
+<a
+    href="{{ url_for('coordenador') }}"
+    class="botao botao-secundario"
+>
+    Voltar
+</a>
+```
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,254 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOPO */
+
+.topo {
+    width: 100%;
+    background-color: #005ca9;
+    color: white;
+
+    padding: 18px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.topo nav {
+    display: flex;
+    gap: 20px;
+}
+
+.topo nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.topo nav a:hover {
+    text-decoration: underline;
+}
+
+/* CONTEÚDO */
+
+.conteudo {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+    padding: 40px 20px;
+
+    flex: 1;
+}
+
+/* CARDS */
+
+.card {
+    background-color: white;
+
+    border-radius: 10px;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card h1 {
+    color: #005ca9;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    color: #005ca9;
+    margin-bottom: 15px;
+}
+
+/* BOTÕES */
+
+.botao {
+    display: inline-block;
+
+    background-color: #005ca9;
+    color: white;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.botao:hover {
+    background-color: #004b8a;
+}
+
+/* RODAPÉ */
+
+.rodape {
+    width: 100%;
+
+    background-color: #005ca9;
+    color: white;
+
+    text-align: center;
+
+    padding: 18px;
+
+    margin-top: auto;
+}
+
+
+/* =========================
+   TABELAS
+========================= */
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabela th {
+    background-color: #005ca9;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabela td {
+    padding: 12px;
+    border-bottom: 1px solid #d9e0e6;
+}
+
+.tabela tr:hover {
+    background-color: #f4f6f8;
+}
+
+
+/* =========================
+   DISPONIBILIDADE
+========================= */
+
+.disponivel {
+    color: #198754;
+    font-weight: bold;
+}
+
+.indisponivel {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+
+/* =========================
+   FORMULÁRIOS
+========================= */
+
+.campo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.campo input {
+    width: 100%;
+    max-width: 500px;
+
+    padding: 12px;
+
+    border: 1px solid #d9e0e6;
+    border-radius: 6px;
+
+    font-size: 15px;
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: #005ca9;
+}
+
+
+/* =========================
+   MENSAGEM DE ERRO
+========================= */
+
+.mensagem-erro {
+    margin-top: 20px;
+
+    padding: 12px;
+
+    background-color: #f8d7da;
+    color: #842029;
+
+    border-radius: 6px;
+}
+
+
+/* =========================
+   BOTÃO SECUNDÁRIO
+========================= */
+
+.botao-secundario {
+    background-color: #6c757d;
+    margin-left: 10px;
+}
+
+.botao-secundario:hover {
+    background-color: #5c636a;
+}
+
+.botao-excluir {
+    background-color: #dc3545;
+    margin-left: 5px;
+}
+
+.botao-excluir:hover {
+    background-color: #b02a37;
+}
+
+
+.campo select {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    border: 1px solid #d9e0e6;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: white;
+}
+
+.campo select:focus {
+    outline: none;
+    border-color: #005ca9;
+}

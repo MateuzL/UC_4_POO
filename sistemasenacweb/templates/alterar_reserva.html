@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+Alterar Reserva
+{% endblock %}
+
+{% block menu %}
+
+<a href="{{ url_for('professor') }}">
+    Início
+</a>
+
+<a href="{{ url_for('professor_salas') }}">
+    Salas
+</a>
+
+<a href="{{ url_for('professor_reservas') }}">
+    Reservas
+</a>
+
+<a href="{{ url_for('logout') }}">
+    Sair
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+```
+<h1>
+    Alterar Reserva
+</h1>
+
+<p>
+    Sala {{ reserva.sala.numero }}
+    — {{ reserva.turma.nome }}
+</p>
+
+<form method="POST">
+
+    <div class="campo">
+
+        <label for="data">
+            Data
+        </label>
+
+        <input
+            type="date"
+            id="data"
+            name="data"
+            value="{{ reserva.data }}"
+            required
+        >
+
+    </div>
+
+
+    <div class="campo">
+
+        <label for="horario">
+            Horário
+        </label>
+
+        <select
+            id="horario"
+            name="horario"
+            required
+        >
+
+            <option
+                value="Manhã"
+                {% if reserva.horario == "Manhã" %}
+                    selected
+                {% endif %}
+            >
+                Manhã — 08:00 às 12:00
+            </option>
+
+            <option
+                value="Tarde"
+                {% if reserva.horario == "Tarde" %}
+                    selected
+                {% endif %}
+            >
+                Tarde — 13:00 às 17:00
+            </option>
+
+            <option
+                value="Noite"
+                {% if reserva.horario == "Noite" %}
+                    selected
+                {% endif %}
+            >
+                Noite — 18:00 às 22:00
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <button
+        type="submit"
+        class="botao"
+    >
+        Salvar Alterações
+    </button>
+
+    <a
+        href="{{ url_for('professor_reservas') }}"
+        class="botao botao-secundario"
+    >
+        Voltar
+    </a>
+
+</form>
+```
+
+</div>
+
+{% endblock %}

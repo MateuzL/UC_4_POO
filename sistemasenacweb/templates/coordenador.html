@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}
+Painel do Coordenador
+{% endblock %}
+
+{% block menu %}
+
+<a href="{{ url_for('coordenador') }}">
+    Início
+</a>
+
+<a href="{{ url_for('coordenador') }}">
+    Salas
+</a>
+
+<a href="{{ url_for('consultar_turmas') }}">
+    Turmas
+</a>
+
+<a href="#">
+    Reservas
+</a>
+
+<a href="{{ url_for('logout') }}">
+    Sair
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+
+<h1>
+    Painel do Coordenador
+</h1>
+
+<p>
+    Bem-vindo ao sistema educacional.
+</p>
+
+
+</div>
+
+<div class="card">
+
+
+<h2>
+    Salas cadastradas
+</h2>
+
+{% if salas %}
+
+    <table class="tabela">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Sala
+                </th>
+
+                <th>
+                    Capacidade
+                </th>
+
+                <th>
+                    Disponibilidade
+                </th>
+
+                <th>
+                    Ações
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            {% for sala in salas %}
+
+            <tr>
+
+                <td>
+                    {{ sala.numero }}
+                </td>
+
+                <td>
+                    {{ sala.capacidade }}
+                </td>
+
+                <td>
+
+                    {% if sala.disponivel %}
+
+                        <span class="disponivel">
+                            Disponível
+                        </span>
+
+                    {% else %}
+
+                        <span class="indisponivel">
+                            Indisponível
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <a
+                        href="{{ url_for('alterar_sala', numero=sala.numero) }}"
+                        class="botao"
+                    >
+                        Alterar
+                    </a>
+
+                    <a
+                        href="{{ url_for('excluir_sala', numero=sala.numero) }}"
+                        class="botao botao-excluir"
+                        onclick="return confirm('Tem certeza que deseja excluir esta sala?');"
+                    >
+                        Excluir
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% else %}
+
+    <p>
+        Nenhuma sala cadastrada.
+    </p>
+
+{% endif %}
+
+
+<br>
+
+<a
+    href="{{ url_for('cadastrar_sala') }}"
+    class="botao"
+>
+    Cadastrar Sala
+</a>
+
+
+</div>
+
+{% endblock %}
