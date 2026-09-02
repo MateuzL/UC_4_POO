@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}SENAC | Login{% endblock %}
+{% block login_content %}
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="senac-mark large">SENAC</div>
+            <h1>Gestão Acadêmica</h1>
+            <p>Sistema de gerenciamento acadêmico</p>
+        </div>
+        <div class="login-title">
+            <h2>Bem-vindo!</h2>
+            <p>Entre para acessar o ambiente acadêmico.</p>
+        </div>
+        {% if erro %}<div class="error-message">{{ erro }}</div>{% endif %}
+        <form method="POST">
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder="Digite seu e-mail" required>
+            <label>Senha</label>
+            <input type="password" name="senha" placeholder="Digite sua senha" required>
+            <button class="btn-primary full">Entrar no sistema</button>
+        </form>
+        <div class="demo-box">
+            <strong>ACESSO PARA APRESENTAÇÃO</strong>
+            <span><b>Coordenador:</b> admin@escola.com · 1234</span>
+            <span><b>Professor:</b> professor@escola.com · 1234</span>
+        </div>
+        <div class="login-footer">SENAC · Gestão Acadêmica</div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SENAC | Gestão Acadêmica{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+{% if session.get("usuario_id") %}
+<div class="app">
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="senac-mark">SENAC</div>
+            <div>
+                <strong>Gestão Acadêmica</strong>
+                <small>Sistema acadêmico</small>
+            </div>
+        </div>
+
+        <div class="menu-label">PRINCIPAL</div>
+        <nav class="menu">
+            <a href="{{ url_for('dashboard') }}" class="menu-item {% if request.endpoint == 'dashboard' %}active{% endif %}"><span>⌂</span>Dashboard</a>
+            <a href="{{ url_for('consultar_salas') }}" class="menu-item {% if request.endpoint == 'consultar_salas' %}active{% endif %}"><span>▣</span>Salas</a>
+            <a href="{{ url_for('consultar_turmas') }}" class="menu-item {% if request.endpoint == 'consultar_turmas' %}active{% endif %}"><span>▤</span>Turmas</a>
+            <a href="{{ url_for('consultar_professores') }}" class="menu-item {% if request.endpoint == 'consultar_professores' %}active{% endif %}"><span>♙</span>Professores</a>
+            <a href="{{ url_for('consultar_reservas') }}" class="menu-item {% if request.endpoint == 'consultar_reservas' %}active{% endif %}"><span>◷</span>Reservas</a>
+        </nav>
+
+        <div class="menu-label">SISTEMA</div>
+        <nav class="menu">
+            <a href="{{ url_for('consultar_reservas') }}" class="menu-item"><span>▥</span>Agenda</a>
+            <a href="#" class="menu-item" onclick="mostrarAviso(event)"><span>⚙</span>Configurações</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="institution">
+                <div class="institution-icon">S</div>
+                <div><strong>SENAC</strong><small>Ambiente acadêmico</small></div>
+            </div>
+            <a href="{{ url_for('logout') }}" class="menu-item logout"><span>↪</span>Sair</a>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="heading">
+                <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+                <div>
+                    <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                    <p>SENAC · Gestão Acadêmica</p>
+                </div>
+            </div>
+            <div class="user-area">
+                <div class="notification">🔔<i></i></div>
+                <div class="user">
+                    <div class="avatar">{{ session.get("nome", "U")[0] }}</div>
+                    <div><strong>{{ session.get("nome") }}</strong><small>{{ session.get("tipo")|capitalize }}</small></div>
+                </div>
+            </div>
+        </header>
+
+        <section class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </section>
+
+        <footer class="footer">
+            <span>SENAC · Sistema de Gestão Acadêmica</span>
+            <span>Ambiente de apresentação</span>
+        </footer>
+    </main>
+</div>
+{% else %}
+    {% block login_content %}{% endblock %}
+{% endif %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="welcome">
+    <div><h2>Olá, {{ session.get("nome") }}! 👋</h2><p>Visão geral da instituição e do ambiente acadêmico.</p></div>
+    <div class="date-badge">📅 02 de setembro de 2026</div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon blue">▤</div><div><span>Turmas</span><strong>{{ turmas|length }}</strong><small>cadastradas</small></div></div>
+    <div class="stat-card"><div class="stat-icon orange">▣</div><div><span>Salas</span><strong>{{ salas|length }}</strong><small>no sistema</small></div></div>
+    <div class="stat-card"><div class="stat-icon green">♙</div><div><span>Professores</span><strong>{{ usuarios|length if usuarios is defined else 1 }}</strong><small>usuários cadastrados</small></div></div>
+    <div class="stat-card"><div class="stat-icon purple">◷</div><div><span>Reservas</span><strong>{{ reservas|length }}</strong><small>registradas</small></div></div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="panel">
+        <div class="panel-header"><div><h3>Turmas em andamento</h3><p>Visão geral das turmas cadastradas</p></div><a class="link-button" href="{{ url_for('consultar_turmas') }}">Ver todas</a></div>
+        <div class="table-container">
+            <table><thead><tr><th>Turma</th><th>Curso</th><th>Turno</th><th>Sala</th></tr></thead>
+            <tbody>
+            {% for turma in turmas %}
+            <tr><td><strong>{{ turma.nome }}</strong></td><td>{{ turma.curso }}</td><td><span class="badge">{{ turma.turno }}</span></td><td>{{ turma.sala }}</td></tr>
+            {% endfor %}
+            </tbody></table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header"><div><h3>Próximas reservas</h3><p>Agenda cadastrada</p></div><a class="link-button" href="{{ url_for('consultar_reservas') }}">Ver agenda</a></div>
+        <div class="reservation-list">
+        {% for reserva in reservas %}
+            <div class="reservation">
+                <div class="reservation-time"><strong>{{ reserva.horario.split(" - ")[0] }}</strong><small>{{ reserva.horario.split(" - ")[1] }}</small></div>
+                <div class="reservation-info"><strong>{{ reserva.turma }}</strong><span>{{ reserva.sala }} · {{ reserva.professor }}</span></div>
+                <span class="status {% if reserva.status == 'Confirmada' %}confirmed{% else %}pending{% endif %}">{{ reserva.status }}</span>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-header"><div><h3>Salas</h3><p>Situação atual das salas</p></div><a class="btn-primary small" href="{{ url_for('consultar_salas') }}">Gerenciar salas</a></div>
+    <div class="rooms-grid">
+    {% for sala in salas %}
+        <div class="room-card">
+            <div class="room-top"><div class="room-icon">▣</div><span class="status {% if sala.disponivel %}confirmed{% else %}occupied{% endif %}">{% if sala.disponivel %}Livre{% else %}Ocupada{% endif %}</span></div>
+            <h4>{{ sala.numero }}</h4><p>{{ sala.localizacao }}</p><div class="room-info">👥 {{ sala.capacidade }} alunos</div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

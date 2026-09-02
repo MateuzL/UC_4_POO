@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reservas
+{% endblock %}
+
+
+{% block menu %}
+
+<a href="{{ url_for('coordenador') }}">
+    Início
+</a>
+
+<a href="{{ url_for('coordenador') }}">
+    Salas
+</a>
+
+<a href="{{ url_for('consultar_turmas') }}">
+    Turmas
+</a>
+
+<a href="{{ url_for('coordenador_reservas') }}">
+    Reservas
+</a>
+
+<a href="{{ url_for('logout') }}">
+    Sair
+</a>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="pagina-cabecalho">
+
+    <h1>
+        Reservas
+    </h1>
+
+    <p>
+        Consulte todas as reservas realizadas
+        pelos professores.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-titulo">
+
+        <div>
+
+            <h2>
+                Reservas cadastradas
+            </h2>
+
+            <p>
+                Todas as reservas registradas no sistema.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if reservas %}
+
+        <div class="tabela-container">
+
+            <table class="tabela">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Professor
+                        </th>
+
+                        <th>
+                            Sala
+                        </th>
+
+                        <th>
+                            Turma
+                        </th>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            Período
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for reserva in reservas %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ reserva.professor.nome }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            Sala {{ reserva.sala.numero }}
+                        </td>
+
+
+                        <td>
+                            {{ reserva.turma.nome }}
+                        </td>
+
+
+                        <td>
+                            {{ reserva.data }}
+                        </td>
+
+
+                        <td>
+                            {{ reserva.horario }}
+                        </td>
+
+
+                        <td>
+
+                            {% if reserva.status == "Ativa" %}
+
+                                <span class="status reserva-ativa">
+                                    Ativa
+                                </span>
+
+                            {% else %}
+
+                                <span class="status reserva-cancelada">
+                                    Cancelada
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+
+            <div class="estado-vazio-icone">
+                📅
+            </div>
+
+            <h3>
+                Nenhuma reserva encontrada
+            </h3>
+
+            <p>
+                Ainda não existem reservas cadastradas no sistema.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

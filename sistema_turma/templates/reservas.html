@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block page_title %}Reservas{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h2>Reservas de Salas</h2><p>Consulte a agenda e solicite reservas para as turmas.</p></div><button class="btn-primary" onclick="abrirModalReserva()">+ Solicitar reserva</button></div>
+<div class="panel"><div class="panel-header"><div><h3>Agenda acadêmica</h3><p>Reservas registradas no sistema</p></div></div>
+<div class="table-container"><table><thead><tr><th>Data</th><th>Horário</th><th>Turma</th><th>Sala</th><th>Professor</th><th>Status</th><th>Ação</th></tr></thead><tbody>
+{% for r in reservas %}<tr><td>{{ r.data }}</td><td><strong>{{ r.horario }}</strong></td><td>{{ r.turma }}</td><td>{{ r.sala }}</td><td>{{ r.professor }}</td><td><span class="status {% if r.status == 'Confirmada' %}confirmed{% else %}pending{% endif %}">{{ r.status }}</span></td><td><form method="POST" action="{{ url_for('cancelar_reserva', id=r.id) }}" onsubmit="return confirm('Cancelar esta reserva?')"><button class="btn-delete inline">Cancelar</button></form></td></tr>{% endfor %}
+</tbody></table></div></div>
+
+<div class="modal-overlay" id="modalReserva"><div class="modal"><div class="modal-header"><div><h3>Solicitar reserva</h3><p>Faça uma solicitação de uso de sala.</p></div><button class="modal-close" onclick="fecharModal('modalReserva')">×</button></div>
+<form method="POST" action="{{ url_for('cadastrar_reserva') }}"><div class="modal-body">
+<label>Turma</label><select name="turma">{% for t in turmas %}<option>{{ t.nome }}</option>{% endfor %}</select>
+<label>Sala</label><select name="sala">{% for s in salas %}<option>{{ s.numero }}</option>{% endfor %}</select>
+<div class="form-row"><div><label>Data</label><input type="date" name="data" required></div><div><label>Horário</label><input name="horario" placeholder="08:00 - 10:00" required></div></div>
+</div><div class="modal-footer"><button type="button" class="btn-secondary" onclick="fecharModal('modalReserva')">Cancelar</button><button class="btn-primary">Enviar solicitação</button></div></form></div></div>
+{% endblock %}

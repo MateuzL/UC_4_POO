@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block page_title %}Turmas{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h2>Gerenciamento de Turmas</h2><p>Cadastre e organize as turmas, cursos, turnos e salas.</p></div><button class="btn-primary" onclick="abrirModalTurma()">+ Nova turma</button></div>
+<div class="filter-panel"><div class="search-box">🔎 <input id="buscaTurma" oninput="filtrarCards('buscaTurma','filtroTurno','.turma-card')" placeholder="Pesquisar turma ou curso..."></div><select id="filtroTurno" onchange="filtrarCards('buscaTurma','filtroTurno','.turma-card')"><option value="">Todos os turnos</option><option>Matutino</option><option>Vespertino</option><option>Noturno</option></select></div>
+<div class="turmas-grid">
+{% for turma in turmas %}
+<div class="panel turma-card" data-search="{{ (turma.nome ~ ' ' ~ turma.curso ~ ' ' ~ turma.sala)|lower }}" data-filter="{{ turma.turno }}">
+    <div class="turma-top"><span class="turma-code">{{ turma.nome }}</span><span class="badge">{{ turma.turno }}</span></div>
+    <h3>{{ turma.curso }}</h3><p class="muted">Sala: {{ turma.sala }}</p>
+    <div class="turma-meta"><span>👥 {{ turma.quantidade_alunos }} alunos</span><span>📚 {{ turma.turno }}</span></div>
+    <div class="room-actions">
+        <button class="btn-edit" onclick='editarTurma({{ turma.id }}, {{ turma.nome|tojson }}, {{ turma.curso|tojson }}, {{ turma.quantidade_alunos }}, {{ turma.turno|tojson }}, {{ turma.sala|tojson }})'>✎ Editar</button>
+        <form method="POST" action="{{ url_for('excluir_turma', id=turma.id) }}" onsubmit="return confirm('Deseja excluir esta turma?')"><button class="btn-delete">🗑 Excluir</button></form>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+<div class="modal-overlay" id="modalTurma"><div class="modal">
+<div class="modal-header"><div><h3 id="tituloTurma">Nova turma</h3><p>Preencha os dados acadêmicos.</p></div><button class="modal-close" onclick="fecharModal('modalTurma')">×</button></div>
+<form id="formTurma" method="POST" action="{{ url_for('cadastrar_turma') }}"><div class="modal-body">
+<label>Nome / código</label><input id="turmaNome" name="nome" required placeholder="Ex.: INFOR 03">
+<label>Curso</label><input id="turmaCurso" name="curso" required placeholder="Nome do curso">
+<div class="form-row"><div><label>Quantidade de alunos</label><input id="turmaQtd" name="quantidade_alunos" type="number" min="1" required></div><div><label>Turno</label><select id="turmaTurno" name="turno"><option>Matutino</option><option>Vespertino</option><option>Noturno</option></select></div></div>
+<label>Sala</label><select id="turmaSala" name="sala">{% for sala in salas %}<option>{{ sala.numero }}</option>{% endfor %}</select>
+</div><div class="modal-footer"><button type="button" class="btn-secondary" onclick="fecharModal('modalTurma')">Cancelar</button><button class="btn-primary">Salvar turma</button></div></form>
+</div></div>
+{% endblock %}

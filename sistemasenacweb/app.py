@@ -856,6 +856,21 @@ def cadastrar_turma():
 # CONSULTAR TURMAS
 # ==========================================================
 
+# ==========================================================
+# CONSULTAR RESERVAS - COORDENADOR
+# ==========================================================
+
+@app.route(
+    "/coordenador/reservas"
+)
+def coordenador_reservas():
+
+    return render_template(
+        "coordenador_reservas.html",
+        reservas=reservas
+    )
+
+
 @app.route(
     "/coordenador/turmas"
 )
@@ -999,6 +1014,11 @@ def excluir_turma(nome):
     return redirect(
         url_for("consultar_turmas")
     )
+    
+    
+    
+    
+    
 
 
 # ==========================================================

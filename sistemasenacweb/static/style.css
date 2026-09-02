@@ -893,3 +893,314 @@ body {
     text-align: center;
     width: 100%;
 }
+
+
+/* ==========================================================
+   PÁGINAS INTERNAS
+   ========================================================== */
+
+.pagina-cabecalho {
+
+    margin-bottom: 30px;
+
+}
+
+.pagina-cabecalho h1 {
+
+    color: #005ca9;
+
+    font-size: 32px;
+
+    margin-bottom: 8px;
+
+}
+
+.pagina-cabecalho p {
+
+    color: #6c757d;
+
+    font-size: 16px;
+
+}
+
+
+/* ==========================================================
+   TEXTO DE AJUDA
+   ========================================================== */
+
+.texto-ajuda {
+
+    color: #6c757d;
+
+    margin-bottom: 10px;
+
+}
+
+
+/* ==========================================================
+   FORMULÁRIO DE FILTRO
+   ========================================================== */
+
+.formulario-filtro {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr auto;
+
+    gap: 20px;
+
+    align-items: end;
+
+}
+
+.campo-botao {
+
+    margin-bottom: 20px;
+
+}
+
+
+/* ==========================================================
+   CABEÇALHO DO RESULTADO
+   ========================================================== */
+
+.resultado-cabecalho {
+
+    margin-bottom: 20px;
+
+}
+
+.resultado-cabecalho h2 {
+
+    color: #005ca9;
+
+    margin-bottom: 8px;
+
+}
+
+.resultado-cabecalho p {
+
+    color: #6c757d;
+
+}
+
+
+/* ==========================================================
+   RESUMO DA DISPONIBILIDADE
+   ========================================================== */
+
+.resumo-disponibilidade {
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+.resumo-item {
+
+    min-width: 180px;
+
+    background-color: #f4f6f8;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.resumo-numero {
+
+    color: #005ca9;
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    margin-bottom: 4px;
+
+}
+
+.resumo-label {
+
+    color: #6c757d;
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVIDADE
+   ========================================================== */
+
+@media (max-width: 800px) {
+
+    .formulario-filtro {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .campo-botao {
+
+        margin-bottom: 0;
+
+    }
+
+    .resumo-disponibilidade {
+
+        flex-direction: column;
+
+    }
+
+    .resumo-item {
+
+        width: 100%;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .pagina-cabecalho h1 {
+
+        font-size: 26px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   RESERVAS DO PROFESSOR
+   ========================================================== */
+
+.card-acoes {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* ==========================================================
+   STATUS DAS RESERVAS
+   ========================================================== */
+
+.reserva-ativa {
+
+    background-color: #d1e7dd;
+
+    color: #146c43;
+
+}
+
+
+.reserva-cancelada {
+
+    background-color: #f8d7da;
+
+    color: #b02a37;
+
+}
+
+
+/* ==========================================================
+   AÇÃO INDISPONÍVEL
+   ========================================================== */
+
+.acao-indisponivel {
+
+    color: #6c757d;
+
+    font-size: 13px;
+
+}
+
+
+/* ==========================================================
+   SOLICITAR RESERVA
+   ========================================================== */
+
+.formulario-acoes {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 10px;
+
+}
+
+
+.formulario-acoes .botao-secundario {
+
+    margin-left: 0;
+
+}
+
+
+.texto-campo-sucesso {
+
+    color: #198754;
+
+    font-size: 13px;
+
+    margin-top: 8px;
+
+}
+
+
+.aviso-sem-sala {
+
+    color: #b02a37;
+
+    background-color: #f8d7da;
+
+    padding: 10px 12px;
+
+    border-radius: 6px;
+
+    margin-top: 10px;
+
+    max-width: 500px;
+
+    font-size: 14px;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .formulario-acoes {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+    .formulario-acoes .botao {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+}

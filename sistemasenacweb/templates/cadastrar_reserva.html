@@ -19,6 +19,10 @@ Solicitar Reserva
     Minhas Reservas
 </a>
 
+<a href="{{ url_for('solicitar_reserva') }}">
+    Solicitar Reserva
+</a>
+
 <a href="{{ url_for('logout') }}">
     Sair
 </a>
@@ -28,13 +32,37 @@ Solicitar Reserva
 
 {% block content %}
 
-<div class="card">
+<!-- ======================================================
+     CABEÇALHO
+     ====================================================== -->
 
-    <h1>Solicitar Reserva</h1>
+<div class="pagina-cabecalho">
+
+    <h1>
+        Solicitar Reserva
+    </h1>
 
     <p>
-        Escolha a data e o período para verificar
-        a disponibilidade das salas.
+        Escolha a data, o período, a sala e a turma
+        para realizar uma nova reserva.
+    </p>
+
+</div>
+
+
+<!-- ======================================================
+     FORMULÁRIO
+     ====================================================== -->
+
+<div class="card">
+
+    <h2>
+        Dados da reserva
+    </h2>
+
+    <p class="texto-ajuda">
+        Primeiro selecione a data e o período.
+        As salas disponíveis serão apresentadas abaixo.
     </p>
 
 
@@ -136,8 +164,9 @@ Solicitar Reserva
             >
 
                 <option value="">
-                    Selecione uma sala
+                    Selecione uma sala disponível
                 </option>
+
 
                 {% for item in disponibilidades %}
 
@@ -149,8 +178,8 @@ Solicitar Reserva
 
                             Sala {{ item.sala.numero }}
                             —
-                            Capacidade:
                             {{ item.sala.capacidade }}
+                            alunos
 
                         </option>
 
@@ -159,6 +188,33 @@ Solicitar Reserva
                 {% endfor %}
 
             </select>
+
+
+            {% if data and horario %}
+
+                {% set salas_disponiveis = disponibilidades
+                    |selectattr("disponivel")
+                    |list
+                    |length
+                %}
+
+                {% if salas_disponiveis == 0 %}
+
+                    <p class="aviso-sem-sala">
+                        Nenhuma sala está disponível
+                        para esta data e período.
+                    </p>
+
+                {% else %}
+
+                    <p class="texto-campo-sucesso">
+                        {{ salas_disponiveis }}
+                        sala(s) disponível(is) para este período.
+                    </p>
+
+                {% endif %}
+
+            {% endif %}
 
         </div>
 
@@ -181,6 +237,7 @@ Solicitar Reserva
                     Selecione uma turma
                 </option>
 
+
                 {% for turma in turmas %}
 
                     <option value="{{ turma.nome }}">
@@ -198,102 +255,127 @@ Solicitar Reserva
         </div>
 
 
-        <!-- BOTÃO -->
+        <!-- BOTÕES -->
 
-        <button
-            type="submit"
-            class="botao"
-        >
-            Solicitar Reserva
-        </button>
+        <div class="formulario-acoes">
 
+            <button
+                type="submit"
+                class="botao"
+            >
+                Solicitar Reserva
+            </button>
 
-        <a
-            href="{{ url_for('professor_reservas') }}"
-            class="botao botao-secundario"
-        >
-            Cancelar
-        </a>
+            <a
+                href="{{ url_for('professor_reservas') }}"
+                class="botao botao-secundario"
+            >
+                Cancelar
+            </a>
+
+        </div>
 
     </form>
 
 </div>
 
 
+<!-- ======================================================
+     DISPONIBILIDADE
+     ====================================================== -->
+
 {% if data and horario %}
 
 <div class="card">
 
-    <h2>
-        Disponibilidade
-    </h2>
+    <div class="resultado-cabecalho">
 
-    <p>
-        {{ data }} —
-        {{ horario }}
-    </p>
+        <h2>
+            Disponibilidade das salas
+        </h2>
 
-    <table class="tabela">
+        <p>
+            {{ data }}
+            —
+            {{ horario }}
+        </p>
 
-        <thead>
+    </div>
 
-            <tr>
 
-                <th>
-                    Sala
-                </th>
+    <div class="tabela-container">
 
-                <th>
-                    Capacidade
-                </th>
+        <table class="tabela">
 
-                <th>
-                    Situação
-                </th>
+            <thead>
 
-            </tr>
+                <tr>
 
-        </thead>
+                    <th>
+                        Sala
+                    </th>
 
-        <tbody>
+                    <th>
+                        Capacidade
+                    </th>
 
-            {% for item in disponibilidades %}
+                    <th>
+                        Situação
+                    </th>
 
-            <tr>
+                </tr>
 
-                <td>
-                    Sala {{ item.sala.numero }}
-                </td>
+            </thead>
 
-                <td>
-                    {{ item.sala.capacidade }}
-                </td>
 
-                <td>
+            <tbody>
 
-                    {% if item.disponivel %}
+                {% for item in disponibilidades %}
 
-                        <span class="disponivel">
-                            Disponível
-                        </span>
+                <tr>
 
-                    {% else %}
+                    <td>
 
-                        <span class="indisponivel">
-                            Ocupada
-                        </span>
+                        <strong>
+                            Sala {{ item.sala.numero }}
+                        </strong>
 
-                    {% endif %}
+                    </td>
 
-                </td>
 
-            </tr>
+                    <td>
+                        {{ item.sala.capacidade }}
+                        alunos
+                    </td>
 
-            {% endfor %}
 
-        </tbody>
+                    <td>
 
-    </table>
+                        {% if item.disponivel %}
+
+                            <span class="status disponivel">
+                                Disponível
+                            </span>
+
+                        {% else %}
+
+                            <span class="status indisponivel">
+                                Ocupada
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 

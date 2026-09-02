@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}
+Minhas Reservas
+{% endblock %}
+
+
+{% block menu %}
+
+<a href="{{ url_for('professor') }}">
+    Início
+</a>
+
+<a href="{{ url_for('professor_salas') }}">
+    Salas
+</a>
+
+<a href="{{ url_for('professor_reservas') }}">
+    Minhas Reservas
+</a>
+
+<a href="{{ url_for('solicitar_reserva') }}">
+    Solicitar Reserva
+</a>
+
+<a href="{{ url_for('logout') }}">
+    Sair
+</a>
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- ======================================================
+     CABEÇALHO
+     ====================================================== -->
+
+<div class="pagina-cabecalho">
+
+    <div>
+
+        <h1>
+            Minhas Reservas
+        </h1>
+
+        <p>
+            Consulte e gerencie as reservas realizadas por você.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     BOTÃO NOVA RESERVA
+     ====================================================== -->
+
+<div class="card-acoes">
+
+    <a
+        href="{{ url_for('solicitar_reserva') }}"
+        class="botao"
+    >
+        + Solicitar Nova Reserva
+    </a>
+
+</div>
+
+
+<!-- ======================================================
+     RESERVAS
+     ====================================================== -->
+
+<div class="card">
+
+    <div class="card-titulo">
+
+        <div>
+
+            <h2>
+                Minhas reservas
+            </h2>
+
+            <p>
+                Reservas cadastradas no sistema.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if reservas %}
+
+        <div class="tabela-container">
+
+            <table class="tabela">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Sala
+                        </th>
+
+                        <th>
+                            Turma
+                        </th>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            Período
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for reserva in reservas %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                Sala {{ reserva.sala.numero }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            {{ reserva.turma.nome }}
+                        </td>
+
+
+                        <td>
+                            {{ reserva.data }}
+                        </td>
+
+
+                        <td>
+                            {{ reserva.horario }}
+                        </td>
+
+
+                        <td>
+
+                            {% if reserva.status == "Ativa" %}
+
+                                <span class="status reserva-ativa">
+                                    Ativa
+                                </span>
+
+                            {% else %}
+
+                                <span class="status reserva-cancelada">
+                                    Cancelada
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if reserva.status == "Ativa" %}
+
+                                <a
+                                    href="{{ url_for('alterar_reserva', indice=loop.index0) }}"
+                                    class="botao botao-pequeno"
+                                >
+                                    Alterar
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('cancelar_reserva', indice=loop.index0) }}"
+                                    class="botao botao-excluir botao-pequeno"
+                                    onclick="return confirm('Tem certeza que deseja cancelar esta reserva?');"
+                                >
+                                    Cancelar
+                                </a>
+
+                            {% else %}
+
+                                <span class="acao-indisponivel">
+                                    Sem ações
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+
+            <div class="estado-vazio-icone">
+                📅
+            </div>
+
+            <h3>
+                Nenhuma reserva encontrada
+            </h3>
+
+            <p>
+                Você ainda não possui reservas cadastradas.
+            </p>
+
+            <a
+                href="{{ url_for('solicitar_reserva') }}"
+                class="botao"
+            >
+                Solicitar uma reserva
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

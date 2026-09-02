@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block page_title %}Salas{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h2>Gerenciamento de Salas</h2><p>Consulte, cadastre, altere e exclua salas da instituição.</p></div><button class="btn-primary" onclick="abrirModalSala()">+ Nova sala</button></div>
+
+<div class="filter-panel">
+    <div class="search-box">🔎 <input id="buscaSala" oninput="filtrarCards('buscaSala','filtroSala','.management-room-card')" placeholder="Pesquisar por sala ou localização..."></div>
+    <select id="filtroSala" onchange="filtrarCards('buscaSala','filtroSala','.management-room-card')"><option value="">Todos os status</option><option value="Livre">Livres</option><option value="Ocupada">Ocupadas</option></select>
+</div>
+
+<div class="room-summary">
+    <div><strong>{{ salas|length }}</strong><span>Salas cadastradas</span></div>
+    <div><strong class="summary-green">{{ salas|selectattr("disponivel")|list|length }}</strong><span>Salas livres</span></div>
+    <div><strong class="summary-red">{{ salas|rejectattr("disponivel")|list|length }}</strong><span>Salas ocupadas</span></div>
+</div>
+
+<div class="rooms-management">
+{% for sala in salas %}
+    <div class="management-room-card" data-search="{{ (sala.numero ~ ' ' ~ sala.localizacao)|lower }}" data-filter="{% if sala.disponivel %}Livre{% else %}Ocupada{% endif %}">
+        <div class="management-room-header"><div class="management-room-icon">▣</div><span class="status {% if sala.disponivel %}confirmed{% else %}occupied{% endif %}">{% if sala.disponivel %}Livre{% else %}Ocupada{% endif %}</span></div>
+        <h3>{{ sala.numero }}</h3><p class="room-location">📍 {{ sala.localizacao }}</p>
+        <div class="management-room-info"><div><span>Capacidade</span><strong>{{ sala.capacidade }} alunos</strong></div><div><span>Disponibilidade</span><strong>{% if sala.disponivel %}Disponível{% else %}Ocupada{% endif %}</strong></div></div>
+        <div class="room-actions">
+            <button class="btn-edit" onclick='editarSala({{ sala.id }}, {{ sala.numero|tojson }}, {{ sala.capacidade }}, {{ sala.localizacao|tojson }}, {{ sala.disponivel|tojson }})'>✎ Editar</button>
+            <form method="POST" action="{{ url_for('excluir_sala', id=sala.id) }}" onsubmit="return confirm('Deseja realmente excluir {{ sala.numero }}?')"><button class="btn-delete">🗑 Excluir</button></form>
+        </div>
+    </div>
+{% endfor %}
+<div id="semSalas" class="no-results" style="display:none">🔎<strong>Nenhuma sala encontrada</strong><span>Altere os filtros para tentar novamente.</span></div>
+</div>
+
+<div class="modal-overlay" id="modalSala">
+<div class="modal">
+    <div class="modal-header"><div><h3 id="tituloModal">Nova sala</h3><p>Informe os dados da sala.</p></div><button class="modal-close" onclick="fecharModal()">×</button></div>
+    <form id="formSala" method="POST" action="{{ url_for('cadastrar_sala') }}">
+        <div class="modal-body">
+            <label>Nome / número da sala</label><input id="numero" name="numero" required placeholder="Ex.: Sala 05">
+            <div class="form-row">
+                <div><label>Capacidade</label><input id="capacidade" name="capacidade" type="number" min="1" required></div>
+                <div><label>Disponibilidade</label><select id="disponivel" name="disponivel"><option value="true">Livre / disponível</option><option value="false">Ocupada</option></select></div>
+            </div>
+            <label>Localização</label><input id="localizacao" name="localizacao" required placeholder="Ex.: Bloco A">
+        </div>
+        <div class="modal-footer"><button type="button" class="btn-secondary" onclick="fecharModal()">Cancelar</button><button class="btn-primary">Salvar sala</button></div>
+    </form>
+</div>
+</div>
+{% endblock %}

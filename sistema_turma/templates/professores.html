@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block page_title %}Professores{% endblock %}
+{% block content %}
+<div class="page-intro"><div><h2>Professores</h2><p>Professores cadastrados no ambiente acadêmico.</p></div></div>
+<div class="teachers-grid">
+{% for professor in professores %}
+<div class="teacher-card"><div class="teacher-avatar">{{ professor.nome[0] }}</div><div><h3>{{ professor.nome }}</h3><p>{{ professor.email }}</p><span class="badge">Professor</span></div></div>
+{% endfor %}
+</div>
+{% endblock %}
