@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
@@ -12,64 +11,129 @@
     >
 
     <title>
-        Sistema da Instituição
+        Sistema Educacional
     </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 
 </head>
 
-<body>
 
-    <h1>
-        Sistema da Instituição de Ensino
-    </h1>
+<body class="pagina-login">
 
-    <h2>
-        Login
-    </h2>
 
-    {% if mensagem %}
+    <div class="login-container">
+
+
+        <!-- LADO ESQUERDO -->
+
+        <div class="login-info">
+
+            <div class="login-logo">
+                Sistema Educacional
+            </div>
+
+            <h1>
+                Bem-vindo!
+            </h1>
+
+            <p>
+                Sistema de gerenciamento
+                educacional para coordenadores
+                e professores.
+            </p>
+
+        </div>
+
+
+        <!-- LADO DIREITO -->
+
+        <div class="login-card">
+
+            <h2>
+                Entrar
+            </h2>
+
+            <p class="login-subtitulo">
+                Acesse sua conta para continuar.
+            </p>
+
+
+            {% if mensagem %}
+
+                <div class="mensagem-erro">
+                    {{ mensagem }}
+                </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                action="{{ url_for('login') }}"
+            >
+
+
+                <div class="campo-login">
+
+                    <label for="login">
+                        Login
+                    </label>
+
+                    <input
+                        type="text"
+                        id="login"
+                        name="login"
+                        placeholder="Digite seu login"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo-login">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <input
+                        type="password"
+                        id="senha"
+                        name="senha"
+                        placeholder="Digite sua senha"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="botao-login"
+                >
+                    Entrar
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <footer class="rodape-login">
 
         <p>
-            {{ mensagem }}
+            Sistema Educacional
         </p>
 
-    {% endif %}
+    </footer>
 
-    <form method="POST">
-
-        <label>
-            Login
-        </label>
-
-        <br>
-
-        <input
-            type="text"
-            name="login"
-            required
-        >
-
-        <br><br>
-
-        <label>
-            Senha
-        </label>
-
-        <br>
-
-        <input
-            type="password"
-            name="senha"
-            required
-        >
-
-        <br><br>
-
-        <button type="submit">
-            ENTRAR
-        </button>
-
-    </form>
 
 </body>
 

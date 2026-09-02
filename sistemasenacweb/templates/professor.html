@@ -4,6 +4,7 @@
 Painel do Professor
 {% endblock %}
 
+
 {% block menu %}
 
 <a href="{{ url_for('professor') }}">
@@ -15,7 +16,11 @@ Painel do Professor
 </a>
 
 <a href="{{ url_for('professor_reservas') }}">
-    Reservas
+    Minhas Reservas
+</a>
+
+<a href="{{ url_for('solicitar_reserva') }}">
+    Solicitar Reserva
 </a>
 
 <a href="{{ url_for('logout') }}">
@@ -24,52 +29,128 @@ Painel do Professor
 
 {% endblock %}
 
+
 {% block content %}
 
-<div class="card">
+<!-- ======================================================
+     CABEÇALHO
+     ====================================================== -->
 
-```
-<h1>
-    Painel do Professor
-</h1>
+<div class="painel-cabecalho">
 
-<p>
-    Bem-vindo, {{ professor.nome }}.
-</p>
-```
+    <div>
+
+        <h1>
+            Olá, {{ professor.nome }}!
+        </h1>
+
+        <p>
+            Bem-vindo ao seu painel.
+            Gerencie suas salas e reservas.
+        </p>
+
+    </div>
 
 </div>
 
+
+<!-- ======================================================
+     CARDS DE ACESSO
+     ====================================================== -->
+
+<div class="cards-painel">
+
+    <div class="card-painel">
+
+        <div class="icone-painel">
+            🏫
+        </div>
+
+        <h2>
+            Consultar Salas
+        </h2>
+
+        <p>
+            Consulte quais salas estão disponíveis
+            para uma determinada data e período.
+        </p>
+
+        <a
+            href="{{ url_for('professor_salas') }}"
+            class="botao"
+        >
+            Consultar Salas
+        </a>
+
+    </div>
+
+
+    <div class="card-painel">
+
+        <div class="icone-painel">
+            📅
+        </div>
+
+        <h2>
+            Minhas Reservas
+        </h2>
+
+        <p>
+            Consulte e gerencie as reservas
+            realizadas por você.
+        </p>
+
+        <a
+            href="{{ url_for('professor_reservas') }}"
+            class="botao"
+        >
+            Ver Reservas
+        </a>
+
+    </div>
+
+
+    <div class="card-painel">
+
+        <div class="icone-painel">
+            ➕
+        </div>
+
+        <h2>
+            Nova Reserva
+        </h2>
+
+        <p>
+            Solicite uma sala para suas aulas
+            escolhendo data e período.
+        </p>
+
+        <a
+            href="{{ url_for('solicitar_reserva') }}"
+            class="botao"
+        >
+            Solicitar Reserva
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     INFORMAÇÕES
+     ====================================================== -->
+
 <div class="card">
 
-```
-<h2>
-    Acesso rápido
-</h2>
+    <h2>
+        Acesso rápido
+    </h2>
 
-<br>
-
-<a
-    href="{{ url_for('professor_salas') }}"
-    class="botao"
->
-    Consultar Salas
-</a>
-
-<a
-    href="{{ url_for('professor_reservas') }}"
-    class="botao"
->
-    Minhas Reservas
-</a>
-
-<a
-    href="{{ url_for('solicitar_reserva') }}"
-    class="botao"
->
-    Solicitar Reserva
-</a>
-```
+    <p>
+        Utilize os atalhos acima para consultar salas,
+        verificar suas reservas ou solicitar uma nova reserva.
+    </p>
 
 </div>
 

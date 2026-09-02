@@ -4,6 +4,7 @@
 Consultar Salas
 {% endblock %}
 
+
 {% block menu %}
 
 <a href="{{ url_for('professor') }}">
@@ -15,7 +16,11 @@ Consultar Salas
 </a>
 
 <a href="{{ url_for('professor_reservas') }}">
-    Reservas
+    Minhas Reservas
+</a>
+
+<a href="{{ url_for('solicitar_reserva') }}">
+    Solicitar Reserva
 </a>
 
 <a href="{{ url_for('logout') }}">
@@ -24,80 +29,317 @@ Consultar Salas
 
 {% endblock %}
 
+
 {% block content %}
+
+<!-- ======================================================
+     CABEÇALHO
+     ====================================================== -->
+
+<div class="pagina-cabecalho">
+
+    <div>
+
+        <h1>
+            Consultar Salas
+        </h1>
+
+        <p>
+            Verifique a disponibilidade das salas
+            para uma determinada data e período.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     FILTRO
+     ====================================================== -->
 
 <div class="card">
 
-```
-<h1>
-    Salas
-</h1>
+    <h2>
+        Consultar disponibilidade
+    </h2>
 
-{% if salas %}
-
-    <table class="tabela">
-
-        <thead>
-
-            <tr>
-
-                <th>Sala</th>
-                <th>Capacidade</th>
-                <th>Disponibilidade</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            {% for sala in salas %}
-
-            <tr>
-
-                <td>
-                    {{ sala.numero }}
-                </td>
-
-                <td>
-                    {{ sala.capacidade }}
-                </td>
-
-                <td>
-
-                    {% if sala.disponivel %}
-
-                        <span class="disponivel">
-                            Disponível
-                        </span>
-
-                    {% else %}
-
-                        <span class="indisponivel">
-                            Indisponível
-                        </span>
-
-                    {% endif %}
-
-                </td>
-
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
-
-    </table>
-
-{% else %}
-
-    <p>
-        Nenhuma sala cadastrada.
+    <p class="texto-ajuda">
+        Selecione uma data e um período para verificar
+        quais salas estão disponíveis.
     </p>
 
-{% endif %}
-```
+
+    <form
+        method="GET"
+        action="{{ url_for('professor_salas') }}"
+        class="formulario-filtro"
+    >
+
+        <div class="campo">
+
+            <label for="data">
+                Data
+            </label>
+
+            <input
+                type="date"
+                id="data"
+                name="data"
+                value="{{ data }}"
+                required
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label for="horario">
+                Período
+            </label>
+
+            <select
+                id="horario"
+                name="horario"
+                required
+            >
+
+                <option value="">
+                    Selecione um período
+                </option>
+
+                <option
+                    value="Manhã"
+                    {% if horario == "Manhã" %}
+                        selected
+                    {% endif %}
+                >
+                    Manhã — 08:00 às 12:00
+                </option>
+
+                <option
+                    value="Tarde"
+                    {% if horario == "Tarde" %}
+                        selected
+                    {% endif %}
+                >
+                    Tarde — 13:00 às 17:00
+                </option>
+
+                <option
+                    value="Noite"
+                    {% if horario == "Noite" %}
+                        selected
+                    {% endif %}
+                >
+                    Noite — 18:00 às 22:00
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="campo campo-botao">
+
+            <button
+                type="submit"
+                class="botao"
+            >
+                Consultar
+            </button>
+
+        </div>
+
+    </form>
 
 </div>
+
+
+<!-- ======================================================
+     RESULTADO
+     ====================================================== -->
+
+{% if disponibilidades %}
+
+<div class="card">
+
+    <div class="resultado-cabecalho">
+
+        <div>
+
+            <h2>
+                Resultado da consulta
+            </h2>
+
+            <p>
+                Data:
+                <strong>{{ data }}</strong>
+                &nbsp;|&nbsp;
+                Período:
+                <strong>{{ horario }}</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         RESUMO
+         ================================================== -->
+
+    <div class="resumo-disponibilidade">
+
+        {% set total_disponiveis = disponibilidades
+            |selectattr("disponivel")
+            |list
+            |length
+        %}
+
+        {% set total_salas = disponibilidades|length %}
+
+        <div class="resumo-item">
+
+            <span class="resumo-numero">
+                {{ total_salas }}
+            </span>
+
+            <span class="resumo-label">
+                Salas cadastradas
+            </span>
+
+        </div>
+
+
+        <div class="resumo-item">
+
+            <span class="resumo-numero">
+                {{ total_disponiveis }}
+            </span>
+
+            <span class="resumo-label">
+                Salas disponíveis
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         LISTA DE SALAS
+         ================================================== -->
+
+    <div class="tabela-container">
+
+        <table class="tabela">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Sala
+                    </th>
+
+                    <th>
+                        Capacidade
+                    </th>
+
+                    <th>
+                        Período
+                    </th>
+
+                    <th>
+                        Situação
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in disponibilidades %}
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            Sala {{ item.sala.numero }}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+                        {{ item.sala.capacidade }}
+                        alunos
+                    </td>
+
+
+                    <td>
+                        {{ horario }}
+                    </td>
+
+
+                    <td>
+
+                        {% if item.disponivel %}
+
+                            <span class="status disponivel">
+                                Disponível
+                            </span>
+
+                        {% else %}
+
+                            <span class="status indisponivel">
+                                Ocupada
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% elif data or horario %}
+
+<div class="card">
+
+    <div class="estado-vazio">
+
+        <div class="estado-vazio-icone">
+            🔎
+        </div>
+
+        <h3>
+            Selecione data e período
+        </h3>
+
+        <p>
+            Escolha uma data e um período
+            para consultar a disponibilidade.
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
 
 {% endblock %}

@@ -4,6 +4,7 @@
 Painel do Coordenador
 {% endblock %}
 
+
 {% block menu %}
 
 <a href="{{ url_for('coordenador') }}">
@@ -28,135 +29,269 @@ Painel do Coordenador
 
 {% endblock %}
 
+
 {% block content %}
 
-<div class="card">
+<!-- ======================================================
+     CABEÇALHO
+     ====================================================== -->
 
+<div class="painel-cabecalho">
 
-<h1>
-    Painel do Coordenador
-</h1>
+    <div>
 
-<p>
-    Bem-vindo ao sistema educacional.
-</p>
+        <h1>
+            Painel do Coordenador
+        </h1>
 
+        <p>
+            Gerencie as salas e turmas do sistema educacional.
+        </p>
+
+    </div>
 
 </div>
 
+
+<!-- ======================================================
+     CARDS DE ACESSO
+     ====================================================== -->
+
+<div class="cards-painel">
+
+    <div class="card-painel">
+
+        <div class="icone-painel">
+            🏫
+        </div>
+
+        <h2>
+            Salas
+        </h2>
+
+        <p>
+            Cadastre, altere, exclua e consulte
+            as salas disponíveis.
+        </p>
+
+        <a
+            href="{{ url_for('coordenador') }}"
+            class="botao"
+        >
+            Gerenciar Salas
+        </a>
+
+    </div>
+
+
+    <div class="card-painel">
+
+        <div class="icone-painel">
+            🎓
+        </div>
+
+        <h2>
+            Turmas
+        </h2>
+
+        <p>
+            Cadastre, altere, exclua e consulte
+            as turmas cadastradas.
+        </p>
+
+        <a
+            href="{{ url_for('consultar_turmas') }}"
+            class="botao"
+        >
+            Gerenciar Turmas
+        </a>
+
+    </div>
+
+
+    <div class="card-painel">
+
+        <div class="icone-painel">
+            📅
+        </div>
+
+        <h2>
+            Reservas
+        </h2>
+
+        <p>
+            Consulte as reservas realizadas
+            pelos professores.
+        </p>
+
+        <a
+            href="#"
+            class="botao"
+        >
+            Consultar Reservas
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     SALAS CADASTRADAS
+     ====================================================== -->
+
 <div class="card">
 
+    <div class="card-titulo">
 
-<h2>
-    Salas cadastradas
-</h2>
+        <div>
 
-{% if salas %}
+            <h2>
+                Salas cadastradas
+            </h2>
 
-    <table class="tabela">
+            <p>
+                Gerencie as salas existentes no sistema.
+            </p>
 
-        <thead>
+        </div>
 
-            <tr>
+        <a
+            href="{{ url_for('cadastrar_sala') }}"
+            class="botao"
+        >
+            + Cadastrar Sala
+        </a>
 
-                <th>
-                    Sala
-                </th>
-
-                <th>
-                    Capacidade
-                </th>
-
-                <th>
-                    Disponibilidade
-                </th>
-
-                <th>
-                    Ações
-                </th>
-
-            </tr>
-
-        </thead>
+    </div>
 
 
-        <tbody>
+    {% if salas %}
 
-            {% for sala in salas %}
+        <div class="tabela-container">
 
-            <tr>
+            <table class="tabela">
 
-                <td>
-                    {{ sala.numero }}
-                </td>
+                <thead>
 
-                <td>
-                    {{ sala.capacidade }}
-                </td>
+                    <tr>
 
-                <td>
+                        <th>
+                            Sala
+                        </th>
 
-                    {% if sala.disponivel %}
+                        <th>
+                            Capacidade
+                        </th>
 
-                        <span class="disponivel">
-                            Disponível
-                        </span>
+                        <th>
+                            Disponibilidade
+                        </th>
 
-                    {% else %}
+                        <th>
+                            Ações
+                        </th>
 
-                        <span class="indisponivel">
-                            Indisponível
-                        </span>
+                    </tr>
 
-                    {% endif %}
-
-                </td>
-
-                <td>
-
-                    <a
-                        href="{{ url_for('alterar_sala', numero=sala.numero) }}"
-                        class="botao"
-                    >
-                        Alterar
-                    </a>
-
-                    <a
-                        href="{{ url_for('excluir_sala', numero=sala.numero) }}"
-                        class="botao botao-excluir"
-                        onclick="return confirm('Tem certeza que deseja excluir esta sala?');"
-                    >
-                        Excluir
-                    </a>
-
-                </td>
-
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
-
-    </table>
-
-{% else %}
-
-    <p>
-        Nenhuma sala cadastrada.
-    </p>
-
-{% endif %}
+                </thead>
 
 
-<br>
+                <tbody>
 
-<a
-    href="{{ url_for('cadastrar_sala') }}"
-    class="botao"
->
-    Cadastrar Sala
-</a>
+                    {% for sala in salas %}
 
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                Sala {{ sala.numero }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            {{ sala.capacidade }} alunos
+                        </td>
+
+
+                        <td>
+
+                            {% if sala.disponivel %}
+
+                                <span class="status disponivel">
+                                    Disponível
+                                </span>
+
+                            {% else %}
+
+                                <span class="status indisponivel">
+                                    Indisponível
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('alterar_sala', numero=sala.numero) }}"
+                                class="botao botao-pequeno"
+                            >
+                                Alterar
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('excluir_sala', numero=sala.numero) }}"
+                                class="botao botao-excluir botao-pequeno"
+                                onclick="return confirm('Tem certeza que deseja excluir esta sala?');"
+                            >
+                                Excluir
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+
+            <div class="estado-vazio-icone">
+                🏫
+            </div>
+
+            <h3>
+                Nenhuma sala cadastrada
+            </h3>
+
+            <p>
+                Comece cadastrando a primeira sala do sistema.
+            </p>
+
+            <a
+                href="{{ url_for('cadastrar_sala') }}"
+                class="botao"
+            >
+                Cadastrar primeira sala
+            </a>
+
+        </div>
+
+    {% endif %}
 
 </div>
 

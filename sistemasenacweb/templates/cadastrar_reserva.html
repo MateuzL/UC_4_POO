@@ -4,6 +4,7 @@
 Solicitar Reserva
 {% endblock %}
 
+
 {% block menu %}
 
 <a href="{{ url_for('professor') }}">
@@ -15,7 +16,7 @@ Solicitar Reserva
 </a>
 
 <a href="{{ url_for('professor_reservas') }}">
-    Reservas
+    Minhas Reservas
 </a>
 
 <a href="{{ url_for('logout') }}">
@@ -24,155 +25,278 @@ Solicitar Reserva
 
 {% endblock %}
 
+
 {% block content %}
 
 <div class="card">
 
-```
-<h1>
-    Solicitar Reserva
-</h1>
+    <h1>Solicitar Reserva</h1>
 
-{% if mensagem %}
-
-    <div class="mensagem-erro">
-        {{ mensagem }}
-    </div>
-
-{% endif %}
-
-<form method="POST">
-
-    <div class="campo">
-
-        <label for="sala">
-            Sala
-        </label>
-
-        <select
-            id="sala"
-            name="sala"
-            required
-        >
-
-            <option value="">
-                Selecione uma sala
-            </option>
-
-            {% for sala in salas %}
-
-                {% if sala.disponivel %}
-
-                    <option value="{{ sala.numero }}">
-                        Sala {{ sala.numero }}
-                        - {{ sala.capacidade }} lugares
-                    </option>
-
-                {% endif %}
-
-            {% endfor %}
-
-        </select>
-
-    </div>
+    <p>
+        Escolha a data e o período para verificar
+        a disponibilidade das salas.
+    </p>
 
 
-    <div class="campo">
+    {% if mensagem %}
 
-        <label for="turma">
-            Turma
-        </label>
+        <div class="mensagem-erro">
+            {{ mensagem }}
+        </div>
 
-        <select
-            id="turma"
-            name="turma"
-            required
-        >
+    {% endif %}
 
-            <option value="">
-                Selecione uma turma
-            </option>
 
-            {% for turma in turmas %}
+    <form
+        method="POST"
+        action="{{ url_for('solicitar_reserva') }}"
+    >
 
-                <option value="{{ turma.nome }}">
-                    {{ turma.nome }}
-                    - {{ turma.curso }}
+        <!-- DATA -->
+
+        <div class="campo">
+
+            <label for="data">
+                Data
+            </label>
+
+            <input
+                type="date"
+                id="data"
+                name="data"
+                value="{{ data }}"
+                required
+            >
+
+        </div>
+
+
+        <!-- PERÍODO -->
+
+        <div class="campo">
+
+            <label for="horario">
+                Período
+            </label>
+
+            <select
+                id="horario"
+                name="horario"
+                required
+            >
+
+                <option value="">
+                    Selecione um período
                 </option>
 
-            {% endfor %}
+                <option
+                    value="Manhã"
+                    {% if horario == "Manhã" %}
+                        selected
+                    {% endif %}
+                >
+                    Manhã — 08:00 às 12:00
+                </option>
 
-        </select>
+                <option
+                    value="Tarde"
+                    {% if horario == "Tarde" %}
+                        selected
+                    {% endif %}
+                >
+                    Tarde — 13:00 às 17:00
+                </option>
 
-    </div>
+                <option
+                    value="Noite"
+                    {% if horario == "Noite" %}
+                        selected
+                    {% endif %}
+                >
+                    Noite — 18:00 às 22:00
+                </option>
+
+            </select>
+
+        </div>
 
 
-    <div class="campo">
+        <!-- SALA -->
 
-        <label for="data">
-            Data
-        </label>
+        <div class="campo">
 
-        <input
-            type="date"
-            id="data"
-            name="data"
-            required
+            <label for="sala">
+                Sala
+            </label>
+
+            <select
+                id="sala"
+                name="sala"
+                required
+            >
+
+                <option value="">
+                    Selecione uma sala
+                </option>
+
+                {% for item in disponibilidades %}
+
+                    {% if item.disponivel %}
+
+                        <option
+                            value="{{ item.sala.numero }}"
+                        >
+
+                            Sala {{ item.sala.numero }}
+                            —
+                            Capacidade:
+                            {{ item.sala.capacidade }}
+
+                        </option>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- TURMA -->
+
+        <div class="campo">
+
+            <label for="turma">
+                Turma
+            </label>
+
+            <select
+                id="turma"
+                name="turma"
+                required
+            >
+
+                <option value="">
+                    Selecione uma turma
+                </option>
+
+                {% for turma in turmas %}
+
+                    <option value="{{ turma.nome }}">
+
+                        {{ turma.nome }}
+                        —
+                        {{ turma.curso }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- BOTÃO -->
+
+        <button
+            type="submit"
+            class="botao"
         >
+            Solicitar Reserva
+        </button>
 
-    </div>
 
-
-    <div class="campo">
-
-        <label for="horario">
-            Horário
-        </label>
-
-        <select
-            id="horario"
-            name="horario"
-            required
+        <a
+            href="{{ url_for('professor_reservas') }}"
+            class="botao botao-secundario"
         >
+            Cancelar
+        </a>
 
-            <option value="">
-                Selecione o horário
-            </option>
-
-            <option value="Manhã">
-                Manhã — 08:00 às 12:00
-            </option>
-
-            <option value="Tarde">
-                Tarde — 13:00 às 17:00
-            </option>
-
-            <option value="Noite">
-                Noite — 18:00 às 22:00
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <button
-        type="submit"
-        class="botao"
-    >
-        Solicitar Reserva
-    </button>
-
-    <a
-        href="{{ url_for('professor_reservas') }}"
-        class="botao botao-secundario"
-    >
-        Voltar
-    </a>
-
-</form>
-```
+    </form>
 
 </div>
+
+
+{% if data and horario %}
+
+<div class="card">
+
+    <h2>
+        Disponibilidade
+    </h2>
+
+    <p>
+        {{ data }} —
+        {{ horario }}
+    </p>
+
+    <table class="tabela">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Sala
+                </th>
+
+                <th>
+                    Capacidade
+                </th>
+
+                <th>
+                    Situação
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for item in disponibilidades %}
+
+            <tr>
+
+                <td>
+                    Sala {{ item.sala.numero }}
+                </td>
+
+                <td>
+                    {{ item.sala.capacidade }}
+                </td>
+
+                <td>
+
+                    {% if item.disponivel %}
+
+                        <span class="disponivel">
+                            Disponível
+                        </span>
+
+                    {% else %}
+
+                        <span class="indisponivel">
+                            Ocupada
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endif %}
 
 {% endblock %}

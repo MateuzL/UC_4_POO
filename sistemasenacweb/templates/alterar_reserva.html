@@ -15,7 +15,7 @@ Alterar Reserva
 </a>
 
 <a href="{{ url_for('professor_reservas') }}">
-    Reservas
+    Minhas Reservas
 </a>
 
 <a href="{{ url_for('logout') }}">
@@ -24,99 +24,151 @@ Alterar Reserva
 
 {% endblock %}
 
+
 {% block content %}
 
 <div class="card">
 
-```
-<h1>
-    Alterar Reserva
-</h1>
+    <h1>Alterar Reserva</h1>
 
-<p>
-    Sala {{ reserva.sala.numero }}
-    — {{ reserva.turma.nome }}
-</p>
-
-<form method="POST">
-
-    <div class="campo">
-
-        <label for="data">
-            Data
-        </label>
-
-        <input
-            type="date"
-            id="data"
-            name="data"
-            value="{{ reserva.data }}"
-            required
-        >
-
-    </div>
+    <p>
+        Altere a data ou o período da sua reserva.
+    </p>
 
 
-    <div class="campo">
+    {% if mensagem %}
 
-        <label for="horario">
-            Horário
-        </label>
+        <div class="mensagem-erro">
+            {{ mensagem }}
+        </div>
 
-        <select
-            id="horario"
-            name="horario"
-            required
-        >
-
-            <option
-                value="Manhã"
-                {% if reserva.horario == "Manhã" %}
-                    selected
-                {% endif %}
-            >
-                Manhã — 08:00 às 12:00
-            </option>
-
-            <option
-                value="Tarde"
-                {% if reserva.horario == "Tarde" %}
-                    selected
-                {% endif %}
-            >
-                Tarde — 13:00 às 17:00
-            </option>
-
-            <option
-                value="Noite"
-                {% if reserva.horario == "Noite" %}
-                    selected
-                {% endif %}
-            >
-                Noite — 18:00 às 22:00
-            </option>
-
-        </select>
-
-    </div>
+    {% endif %}
 
 
-    <button
-        type="submit"
-        class="botao"
+    <form
+        method="POST"
+        action="{{ url_for('alterar_reserva', indice=request.view_args.indice) }}"
     >
-        Salvar Alterações
-    </button>
 
-    <a
-        href="{{ url_for('professor_reservas') }}"
-        class="botao botao-secundario"
-    >
-        Voltar
-    </a>
+        <!-- INFORMAÇÕES DA RESERVA -->
 
-</form>
-```
+        <div class="campo">
+
+            <label>
+                Sala
+            </label>
+
+            <input
+                type="text"
+                value="Sala {{ reserva.sala.numero }}"
+                disabled
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Turma
+            </label>
+
+            <input
+                type="text"
+                value="{{ reserva.turma.nome }}"
+                disabled
+            >
+
+        </div>
+
+
+        <!-- DATA -->
+
+        <div class="campo">
+
+            <label for="data">
+                Data
+            </label>
+
+            <input
+                type="date"
+                id="data"
+                name="data"
+                value="{{ reserva.data }}"
+                required
+            >
+
+        </div>
+
+
+        <!-- PERÍODO -->
+
+        <div class="campo">
+
+            <label for="horario">
+                Período
+            </label>
+
+            <select
+                id="horario"
+                name="horario"
+                required
+            >
+
+                <option value="">
+                    Selecione um período
+                </option>
+
+                <option
+                    value="Manhã"
+                    {% if reserva.horario == "Manhã" %}
+                        selected
+                    {% endif %}
+                >
+                    Manhã — 08:00 às 12:00
+                </option>
+
+                <option
+                    value="Tarde"
+                    {% if reserva.horario == "Tarde" %}
+                        selected
+                    {% endif %}
+                >
+                    Tarde — 13:00 às 17:00
+                </option>
+
+                <option
+                    value="Noite"
+                    {% if reserva.horario == "Noite" %}
+                        selected
+                    {% endif %}
+                >
+                    Noite — 18:00 às 22:00
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- BOTÕES -->
+
+        <button
+            type="submit"
+            class="botao"
+        >
+            Salvar Alterações
+        </button>
+
+
+        <a
+            href="{{ url_for('professor_reservas') }}"
+            class="botao botao-secundario"
+        >
+            Cancelar
+        </a>
+
+    </form>
 
 </div>
 
