@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-br">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login — Gestão de Salas</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+<main class="login">
+  <div class="login-card">
+    <h1>SENAC</h1>
+    <h2>Gestão de Salas</h2>
+    <p>Entre para visualizar a agenda semanal.</p>
+    <form method="post">
+      <input name="username" placeholder="Usuário" required>
+      <input type="password" name="password" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <div class="demo">
+      <b>Contas de demonstração</b>
+      <p>Coordenação: <code>coordenacao</code> / <code>coordenacao123</code></p>
+      <p>Professores: <code>professor1</code>, <code>professor2</code>, <code>professor3</code> / <code>professor123</code></p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

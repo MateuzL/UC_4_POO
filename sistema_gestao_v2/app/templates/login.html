@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Login{% endblock %}
+{% block public %}<div class="login-page"><div class="login-card"><div class="brand centered"><span class="brand-mark">GA</span></div><h1>Gestão Acadêmica</h1><p>Acesse o sistema de salas e horários.</p>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for cat,msg in messages %}<div class="alert {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
+<form method="post"><label>Login<input name="login" required autocomplete="username"></label><label>Senha<input type="password" name="password" required autocomplete="current-password"></label><button class="primary full">Entrar</button></form>
+<div class="demo"><b>Acessos demo</b><br>Coordenação: coordenacao / coordenacao123<br>Professor: professor1 / professor123</div></div></div>{% endblock %}

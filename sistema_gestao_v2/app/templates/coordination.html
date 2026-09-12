@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block heading %}Coordenação{% endblock %}{% block content %}
+<div class="cards"><div class="card"><span>Salas</span><strong>{{rooms|length}}</strong></div><div class="card"><span>Professores</span><strong>{{teachers|length}}</strong></div><div class="card"><span>Turmas</span><strong>{{classes|length}}</strong></div><div class="card"><span>Horários</span><strong>{{items|length}}</strong></div></div>
+<div class="panel"><div class="panel-title"><div><h2>Agenda da semana</h2><p>Altere, cancele ou reabra horários.</p></div><form method="post" action="{{url_for('coord.generate')}}"><button class="secondary">Gerar Semana</button></form></div>
+<div class="table-wrap"><table><thead><tr><th>Dia</th><th>Turno</th><th>Turma</th><th>Professor</th><th>Sala</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+{% for s in items %}<tr><td>{{s.day}}</td><td>{{s.shift}}</td><td>{{classes[s.class_id].code}}</td><td>{{teachers[s.teacher_id].name}}</td><td>{{rooms[s.room_id].name}}</td><td><span class="badge {{s.status|lower}}">{{s.status|replace('_',' ')}}</span></td><td class="actions">
+<details><summary>Editar</summary><form method="post" action="{{url_for('coord.update_schedule',sid=s.id)}}" class="inline-form">
+<select name="teacher_id">{% for t in teachers.values() %}<option value="{{t.id}}" {% if t.id==s.teacher_id %}selected{% endif %}>{{t.name}}</option>{% endfor %}</select>
+<select name="room_id">{% for r in rooms.values() %}<option value="{{r.id}}" {% if r.id==s.room_id %}selected{% endif %}>{{r.name}}</option>{% endfor %}</select>
+<select name="day">{% for d in day_labels %}<option value="{{d}}" {% if d==s.day %}selected{% endif %}>{{day_labels[d]}}</option>{% endfor %}</select>
+<select name="shift">{% for sh in shifts %}<option value="{{sh}}" {% if sh==s.shift %}selected{% endif %}>{{sh|capitalize}}</option>{% endfor %}</select>
+<input name="reason" placeholder="Motivo obrigatório" required><button class="small primary">Salvar</button></form></details>
+<form method="post" action="{{url_for('coord.cancel',sid=s.id)}}" class="inline-form"><input name="reason" placeholder="Motivo do cancelamento" required><button class="small danger">Cancelar</button></form>
+{% if s.status=="ENVIADA" %}<form method="post" action="{{url_for('coord.reopen',sid=s.id)}}" class="inline-form"><input name="reason" placeholder="Motivo da reabertura" required><button class="small secondary">Reabrir</button></form>{% endif %}
+</td></tr>{% endfor %}</tbody></table></div></div>{% endblock %}

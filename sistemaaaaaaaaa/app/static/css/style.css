@@ -1,0 +1,18 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172333}
+.header{height:64px;background:#0756a8;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 6%;box-shadow:0 2px 8px #0002}
+.brand{font-size:20px;font-weight:700}.header a{color:#fff;text-decoration:none}
+main{max-width:1180px;margin:28px auto;padding:0 20px}.page-head h1{margin:0 0 20px}
+.panel{background:#fff;border-radius:12px;padding:24px;box-shadow:0 3px 16px #0001}
+.panel-top{display:flex;justify-content:space-between;align-items:center;gap:20px}.panel-top h2{margin:0 0 6px}.panel-top p{margin:0;color:#657487}
+.filters{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:22px 0;padding:14px;background:#f7f9fc;border:1px solid #e1e8f0;border-radius:9px}
+.filters label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:#4d5b6a}
+select,input{padding:10px 12px;border:1px solid #cbd6e2;border-radius:7px;background:#fff;min-width:210px}
+button,.btn-secondary{border:0;border-radius:7px;padding:11px 16px;background:#f28c18;color:#fff;text-decoration:none;cursor:pointer;font-weight:700}
+.btn-secondary{background:#667586}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}
+th{background:#eef4fa;color:#33485e}th,td{padding:12px;border-bottom:1px solid #e6ebf0;text-align:left;vertical-align:top}
+small{color:#687889}.status{display:inline-block;padding:5px 8px;border-radius:12px;font-size:12px;font-weight:700;background:#fff0d9;color:#9a5b00}
+.status.confirmada{background:#dff5e7;color:#17633a}.empty{text-align:center;padding:28px;color:#6b7887}
+.flash{padding:12px 14px;border-radius:8px;margin:0 0 16px}.flash.success{background:#dff5e7;color:#17633a}.flash.error{background:#fde2e2;color:#9a2020}.flash.info{background:#e7f0ff;color:#244f8a}
+.login{max-width:440px;margin:8vh auto}.login-card{background:#fff;padding:30px;border-radius:14px;box-shadow:0 5px 24px #0002}.login-card h1{color:#0756a8;margin:0}.login-card h2{margin:5px 0 8px}.login-card form{display:grid;gap:10px;margin:22px 0}.login-card input{width:100%;min-width:0}.demo{background:#f7f9fc;border-radius:8px;padding:12px;font-size:13px}

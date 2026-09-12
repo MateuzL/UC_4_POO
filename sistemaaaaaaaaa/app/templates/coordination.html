@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Coordenação{% endblock %}
+{% block heading %}Agenda semanal — Coordenação{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-top">
+    <div>
+      <h2>Visão geral da semana</h2>
+      <p>Todos os professores, turmas e salas em uma única visualização.</p>
+    </div>
+  </div>
+
+  <form class="filters" method="get">
+    <label>Dia
+      <select name="day">
+        <option value="">Todos os dias</option>
+        {% for day, label in day_labels.items() %}
+        <option value="{{ day }}" {% if selected_day == day %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Horário / turno
+      <select name="shift">
+        <option value="">Todos os turnos</option>
+        {% for shift, time in shifts.items() %}
+        <option value="{{ shift }}" {% if selected_shift == shift %}selected{% endif %}>{{ shift|capitalize }} — {{ time }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">Filtrar</button>
+    <a class="btn-secondary" href="{{ url_for('coord.dashboard') }}">Limpar</a>
+  </form>
+
+  {% include "_schedule_table.html" %}
+</section>
+{% endblock %}
