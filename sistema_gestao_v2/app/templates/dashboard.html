@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="cards">
+<div class="card"><span>Aulas da semana</span><strong>{{items|length}}</strong></div>
+<div class="card"><span>Salas utilizadas</span><strong>{{items|map(attribute='room_id')|list|unique|list|length}}</strong></div>
+<div class="card"><span>Turmas</span><strong>{{items|map(attribute='class_id')|list|unique|list|length}}</strong></div>
+<div class="card"><span>Pendências</span><strong>{{items|selectattr('status','equalto','PENDENTE')|list|length}}</strong></div></div>
+<div class="panel"><div class="panel-title"><h2>Agenda semanal</h2><span class="tag">{{week_start}}</span></div>
+{% include "_schedule_table.html" %}</div>{% endblock %}

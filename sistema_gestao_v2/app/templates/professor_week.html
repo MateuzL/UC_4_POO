@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block heading %}Minha Semana{% endblock %}{% block content %}
+<div class="panel"><div class="panel-title"><div><h2>Semana {{week_start}}</h2><p>Confira e envie sua semana inteira.</p></div>{% if items and items|selectattr('status','equalto','PENDENTE')|list|length %}<form method="post" action="{{url_for('main.submit_week',schedule_id=items[0].id)}}"><button class="primary">Enviar Semana</button></form>{% endif %}</div>{% include "_schedule_table.html" %}</div>{% endblock %}

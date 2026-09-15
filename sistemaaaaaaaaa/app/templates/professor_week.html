@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Minha Semana{% endblock %}
+{% block heading %}Minha semana{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-top">
+    <div>
+      <h2>Semana de 07/09/2026</h2>
+      <p>Confira todos os seus horários ou filtre por dia e turno.</p>
+    </div>
+    {% if items and (items|selectattr("status","equalto","PENDENTE")|list) %}
+      <form method="post" action="{{ url_for('main.submit_week', schedule_id=items[0].id) }}">
+        <button>Enviar e confirmar semana</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <form class="filters" method="get">
+    <label>Dia
+      <select name="day">
+        <option value="">Todos os dias</option>
+        {% for day, label in day_labels.items() %}
+        <option value="{{ day }}" {% if selected_day == day %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Horário / turno
+      <select name="shift">
+        <option value="">Todos os turnos</option>
+        {% for shift, time in shifts.items() %}
+        <option value="{{ shift }}" {% if selected_shift == shift %}selected{% endif %}>{{ shift|capitalize }} — {{ time }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">Filtrar</button>
+    <a class="btn-secondary" href="{{ url_for('main.week', date=week_start) }}">Limpar</a>
+  </form>
+
+  {% include "_schedule_table.html" %}
+</section>
+{% endblock %}

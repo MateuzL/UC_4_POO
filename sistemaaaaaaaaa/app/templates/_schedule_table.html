@@ -1,0 +1,20 @@
+<div class="table-wrap">
+<table>
+<thead><tr><th>Dia</th><th>Horário</th><th>Turno</th><th>Turma</th><th>Professor</th><th>Sala</th><th>Status</th></tr></thead>
+<tbody>
+{% for item in items %}
+<tr>
+<td>{{ day_labels[item.day] }}</td>
+<td>{{ shifts[item.shift] }}</td>
+<td>{{ item.shift|capitalize }}</td>
+<td><b>{{ classes[item.class_id].code }}</b><br><small>{{ classes[item.class_id].course }}</small></td>
+<td>{{ teachers[item.teacher_id].name }}</td>
+<td>{{ rooms[item.room_id].name }}</td>
+<td><span class="status {{ item.status|lower }}">{{ item.status }}</span></td>
+</tr>
+{% else %}
+<tr><td colspan="7" class="empty">Nenhum horário encontrado para o filtro selecionado.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>

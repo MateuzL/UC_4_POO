@@ -6,5 +6,6 @@ Professor|joao|joao|123
 2|20|1
 === TURMAS ===
 Tec dev|Desenvolvimento de Sistemas|20
+Tecnico|Enfermagem|20
 === RESERVAS ===
 joao|1|Tec dev|02/09/2026|18:00|Ativa

@@ -1,0 +1,20 @@
+app/
+  __init__.py
+  data.py
+  routes/
+    auth.py
+    main.py
+    coordination.py
+  services/
+  templates/
+    base.html
+    login.html
+    professor_week.html
+    coordination.html
+    _schedule_table.html
+  static/
+    css/
+      style.css
+requirements.txt
+run.py
+README.md
