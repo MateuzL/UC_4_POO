@@ -1,0 +1,134 @@
+import os
+from flask import Flask, render_template
+from flask import request, render_template, redirect, flash
+from datetime import date, datetime
+from mysql.connector import Error
+import mysql.connector
+from dotenv import load_dotenv
+
+load_dotenv()
+app = Flask(__name__)
+
+def conectar_banco():
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        port=int(os.getenv("DB_PORT", 3306)),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
+
+@app.route("/")
+def inicio():
+    return "<h1>Bem-Vindo ao Senac Reserva</h1>"
+
+@app.route("/salas")
+def listar_salas():
+    conexao = conectar_banco()
+
+    cursor = conexao.cursor(dictionary=True)
+
+    cursor.execute("""
+            SELECT id_sala, nome, capacidade, tipo,
+            descricao, ativa
+            FROM sala
+            ORDER BY id_sala
+            """)
+
+    salas = cursor.fetchall()
+    cursor.close()
+    conexao.close()
+
+    return render_template("salas.html", salas=salas)
+
+USUARIO_TESTE_ID = 1
+
+@app.route("/reservar", methods=["GET", "POST"])
+def reservar():
+    if request.method == "GET":
+        return render_template("reservar.html")
+
+    try:
+        id_sala = int(request.form["id_sala"])
+        data_reserva = date.fromisoformat(
+            request.form["data_reserva"]
+        )
+        hora_inicio = datetime.strptime(
+            request.form["hora_inicio"], "%H:%M"
+        ).time()
+        hora_fim = datetime.strptime(
+            request.form["hora_fim"], "%H:%M"
+        ).time()
+        finalidade = request.form["finalidade"].strip()
+    except (KeyError, ValueError):
+        flash("Dados Inválidos.", "danger")
+      
+
+    if hora_inicio >= hora_fim:
+        flash("Horário final é inválido", "danger")
+        return redirect ("/reservar")
+
+    if data_reserva < date.today():
+        flash("A data não pode estar no passado.", "danger")
+        return redirect("/reservar")
+
+    if not finalidade or len(finalidade) > 200:
+        flash("Informe uma finalidade válida.", "danger")
+        return redirect("/reservar")
+
+    conexao = conectar_banco()
+    cursor = conexao.cursor(dictionary=True)
+
+    try:
+        #Verifica se a sala existe está ativa
+        cursor.execute("""
+        SELECT id_sala FROM sala
+        WHERE id_sala = %s AND ativa = 1
+        """, (id_sala,))
+
+        if cursor.fetchone() is None:
+            conexao.rollback()
+            flash("Sala indisponível.", "danger")
+            return redirect("/reservar")
+
+        #Verifica conflito de horário
+        cursor.execute("""
+        SELECT COUNT(*) AS total
+        FROM reserva
+        WHERE id_sala = %s
+            AND data_reserva = %s
+            AND hora_inicio < %s
+            AND hora_fim > %s""", (id_sala, data_reserva, hora_inicio, hora_fim))
+
+        if cursor.fetchone()["total"] > 0:
+            conexao.rollback()
+            flash("Sala já reservada nesse horário.", "danger")
+            return redirect("/reservar")
+
+        # Gravar a reserva
+        cursor.execute("""
+        INSERT INTO reserva
+        (id_usuario, id_sala, data_reserva, hora_inicio, hora_fim, finalidade)
+        VALUES
+        (%s, %s, %s, %s, %s, %s)""", (USUARIO_TESTE_ID, id_sala, data_reserva, hora_inicio, hora_fim, finalidade))
+
+        conexao.commit()
+
+        flash("Reserva realizada com sucesso!", "success")
+        return redirect("/reservar")
+    
+    except Error:
+        if conexao.in_transaction:
+            conexao.rollback()
+        app.logger.exception("Erro ao salvar a reserva")
+        flash("Erro ao cadastrar a reserva", "danger")
+        return redirect ("/reservar")
+
+    finally:
+            cursor.close()
+            conexao.close()
+
+        
+
+if __name__ == "__main__":
+    app.run(debug=True)
