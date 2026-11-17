@@ -1,22 +1,26 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <title>SENAC RESERVA - SALAS</title>
-    </head>
-    <body>
-        <h1>Salas Cadastradas no Sistema</h1>
 
-        <table border="1">
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<h1 class="mb-4">Salas Cadastradas no Sistema</h1>
+
+<div class="border rounded-3 overflow-auto">
+
+    <table class="table table-striped mb-0">
+
+        <thead>
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Capacidade</th>
-                <th>Tipo</th>
-                <th>Descricao</th>
-                <th>Ativo</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Capacidade</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Ativo</th>
             </tr>
+        </thead>
 
+        <tbody>
             {% for sala in salas %}
             <tr>
                 <td>{{ sala.id_sala }}</td>
@@ -24,9 +28,19 @@
                 <td>{{ sala.capacidade }}</td>
                 <td>{{ sala.tipo }}</td>
                 <td>{{ sala.descricao }}</td>
-                <td>{{ sala.ativa }}</td>
+                <td>
+                    {% if sala.ativa %}
+                        <span class="badge bg-success">Sim</span>
+                    {% else %}
+                        <span class="badge bg-danger">Não</span>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
-        </table>
-    </body>
-</html>
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -215,7 +215,7 @@ def login():
         session["id_perfil"] = usuario["id_perfil"]
 
         flash("Login realizado com sucesso!", "success")
-        return redirect(url_for("reservar"))
+        return redirect(url_for("dashboard"))
     except:
         app.logger.exception("Erro durante o login")
         flash("Não foi possivel realizar o login.", "danger")
@@ -265,6 +265,11 @@ def minhas_reservas():
             cursor.close()
         if conexao is not None:
             conexao.close()
+
+@app.route("/dashboard")
+@login_obrigatorio
+def dashboard():
+    return render_template("dashboard.html")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<h2 class="mb-3"> Painel de Controle</h2>
+
+<p>
+    Bem-vindo, {{ session.get('nome', 'Usuario') }}
+</p>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Nova Reserva
+                </h5>
+                <p class="card-text">
+                    Agende uma sala para suas atividades.
+                </p>
+                <a href="{{ url_for('reservar')}}" class="btn btn-primary">
+                    Fazer Reserva
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+<div class="col-md-6">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">
+                Minhas Reservas
+            </h5>
+            <p class="card-text">
+                Consulte os seus agendamentos.
+            </p>
+            <a href="{{ url_for('minhas_reservas') }}" class="btn btn-success">
+                Visualizar Reservas
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
