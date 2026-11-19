@@ -7,6 +7,7 @@ import mysql.connector
 from dotenv import load_dotenv
 from werkzeug.security import check_password_hash
 from functools import wraps
+from datetime import timedelta
 
 load_dotenv()
 app = Flask(__name__)
@@ -81,8 +82,10 @@ def reservar():
             app.logger.exception('Falha ao carregar as salas')
             return render_template('erro.html', mensagem="Não foi possivel carregar o formulário."), 500
         finally:
-            if cursor: cursor.close()
-            if conexao and conexao.is_connected(): conexao.close()    
+            if cursor is not None:
+                cursor.close()
+            if conexao is not None and conexao.is_connected():
+                conexao.close()    
 
     #Lê e valida os dados enviados
     try:
@@ -256,10 +259,12 @@ def minhas_reservas():
 
         reservas = cursor.fetchall()
         return render_template("minhas_reservas.html", reservas=reservas)
+    
     except Exception:
         app.logger.exception("Erro ao consultar reservas")
         flash("Não foi possível consultar suas reservas.", "danger")
-        return redirect(url_for("salas"))
+        return redirect(url_for("minhas_reservas"))
+    
     finally:
         if cursor is not None:
             cursor.close()
@@ -270,6 +275,135 @@ def minhas_reservas():
 @login_obrigatorio
 def dashboard():
     return render_template("dashboard.html")
+
+@app.route("/reservas/<int:id_reserva>/editar", methods=["GET", "POST"])
+@login_obrigatorio
+def editar_reserva(id_reserva):
+    id_usuario = session["id_usuario"]
+    conexao = None
+    cursor = None
+
+    try:
+        conexao = conectar_banco()
+        cursor = conexao.cursor(dictionary=True)
+
+        cursor.execute("""
+                SELECT id_reserva, id_usuario, id_sala, data_reserva, hora_inicio, hora_fim, finalidade, status
+                FROM reserva
+                WHERE id_reserva = %s
+                AND id_usuario = %s
+                AND status = 'Confirmada' """, (id_reserva, id_usuario))
+        reserva = cursor.fetchone()
+
+        if reserva is None:
+            flash("Reserva não encontrada ou sem permissão.", "danger")
+            return redirect( url_for("minhas_reservas"))
+
+        cursor.execute("""
+                SELECT id_sala, nome
+                FROM sala
+                WHERE ativa = 1
+                ORDER BY nome""")
+        salas = cursor.fetchall()
+
+        if request.method == "GET":
+            reserva["hora_inicio"] = formatar_hora(reserva["hora_inicio"])
+            reserva["hora_fim"] = formatar_hora(reserva["hora_fim"])
+            return render_template("editar_reserva.html", reserva=reserva, salas=salas)
+        
+        id_sala = request.form.get("id_sala", type=int)
+        data_reserva = request.form.get("data_reserva", "")
+        hora_inicio = request.form.get("hora_inicio", "")
+        hora_fim = request.form.get("hora_fim", "")
+        finalidade = request.form.get("finalidade", "").strip()
+
+        if not all([
+            id_sala,
+            data_reserva,
+            hora_inicio,
+            hora_fim,
+            finalidade
+        ]):
+            flash("Preencha todos os campos.", "warning")
+            return redirect(request.url)
+
+        try:
+            data_obj = date.fromisoformat(data_reserva)
+            inicio_obj = datetime.strptime(hora_inicio, "%H:%M").time()
+            fim_obj = datetime.strptime(hora_fim, "%H:%M").time()
+        except ValueError:
+            flash("Data ou horário inválidade.", "danger")
+            return redirect(request.url)
+
+        if data_obj < date.today():
+            flash("Não é permitido reservar datas passadas.", "warning")
+            return redirect(request.url)
+
+        if inicio_obj >= fim_obj:
+            flash("A hora inicial deve ser menor que a final.", "warning")
+            return redirect(request.url)
+
+        cursor.execute("""
+                SELECT id_sala
+                FROM sala
+                WHERE id_sala = %s
+                AND ativa = 1
+                FOR UPDATE""", (id_sala,))
+        sala = cursor.fetchone()
+        if sala is None:
+            flash("A sala selecionada está indisponível.", "danger")
+            return redirect(request.url)
+
+        cursor.execute("""
+                SELECT COUNT(*) AS total
+                FROM reserva
+                WHERE id_sala = %s
+                AND data_reserva = %s
+                AND hora_inicio < %s
+                AND hora_fim > %s
+                AND id_reserva <> %s""", (id_sala, data_reserva, hora_fim, hora_inicio, id_reserva))
+        resultado = cursor.fetchone()
+        if resultado["total"] > 0:
+            flash("Já existe uma reserva nesse horário.", "danger")
+            return redirect(request.url)
+
+        cursor.execute("""
+                UPDATE reserva
+                SET 
+                    id_sala = %s,
+                    data_reserva = %s,
+                    hora_inicio = %s,
+                    hora_fim = %s,
+                    finalidade = %s
+                    WHERE id_reserva = %s
+                    AND id_usuario = %s
+                    AND status = 'Confirmada' """, (id_sala, data_reserva, hora_inicio, hora_fim, finalidade, id_reserva, id_usuario))
+
+        conexao.commit()
+        flash("Reserva atualizada com sucesso!", "success")
+        return redirect(url_for("minhas_reservas"))
+
+    except Exception:
+        if conexao is not None:
+            conexao.rollback()
+        app.logger.exception("Erro ao editar reserva")
+        flash("Não foi possível atualizar a reserva.", "danger")
+        return redirect(url_for("minhas_reservas"))
+
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conexao is not None:
+            conexao.close()
+    
+def formatar_hora(valor):
+    if isinstance(valor, timedelta):
+        total_segundos = int(valor.total_seconds())
+        horas = total_segundos // 3600
+        minutos = (total_segundos % 3600) // 60
+
+        return f"{horas:02d}:{minutos:02d}"
+    return str(valor)[:5]
 
 
 if __name__ == "__main__":
